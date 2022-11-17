@@ -14,6 +14,7 @@ namespace FitnessClub
         public abstract int JoinDate { get; set; }
 
         public abstract void CheckIn(Club club);
+        // hold date/time of check in (potentially for rewards system)
     }
 
 }
