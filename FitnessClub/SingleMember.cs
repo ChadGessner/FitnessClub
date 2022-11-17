@@ -8,5 +8,17 @@ namespace FitnessClub
 {
     public class SingleMember : Members
     {
+        public override Types Type { get; set; } = (Types)0;
+        public Club Club { get; set; }
+        public override string CheckIn(Club club) => base.CheckIn(Club);
+        public SingleMember(Club club)
+        {
+            Club = club;
+        }
+        public override string DataToString()
+        {
+            return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}|{Club.DataToString()}";
+        }
+
     }
 }
