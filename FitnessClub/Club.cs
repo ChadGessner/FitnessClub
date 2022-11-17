@@ -14,7 +14,5 @@ namespace FitnessClub
         //Club level status (status tbd)?
         public int BaseFee { get; set; }
 
-
-
     }
 }
