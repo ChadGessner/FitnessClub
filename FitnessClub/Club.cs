@@ -14,7 +14,9 @@ namespace FitnessClub
         //Club level status (status tbd)?
         public int BaseFee { get; set; }
 
-
-
     }
 }
+
+
+// create list of 4 clubs, plus a multi option
+
