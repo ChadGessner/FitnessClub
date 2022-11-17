@@ -6,15 +6,23 @@ using System.Threading.Tasks;
 
 namespace FitnessClub
 {
-    public abstract class Members
+    public abstract class Members : IWriteable
     {
-        public abstract int ID { get; set; }
-        public abstract string FullName { get; set; }
-        public abstract int DateOfBirth { get; set; } //date time
-        public abstract int JoinDate { get; set; }
+        public virtual int Id { get; set; } // normal naming convention instead of ID
+        public virtual string FullName { get; set; }
+        public virtual DateTime DateOfBirth { get; set; } //date time
+        public virtual DateTime JoinDate { get; set; }
+        public virtual Types Type { get; set; }
 
-        public abstract void CheckIn(Club club);
-        // hold date/time of check in (potentially for rewards system)
+        public virtual string CheckIn(Club club)
+        {
+            DateTime dateTime = DateTime.Now;
+            return $"{DataToString()}|{club.DataToString()}|{dateTime}";
+        }
+        public virtual string DataToString()
+        {
+            return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}";
+        }
     }
 
 }
