@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace FitnessClub
 {
-    internal class Read
+    public class Read
     {
+
     }
 }
