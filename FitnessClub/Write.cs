@@ -8,8 +8,10 @@ namespace FitnessClub
 {
     public class Write
     {
-        private string clubConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
-        private string membersConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMembers.txt";
+        private string clubConnectionString = @"dataClubs.txt";
+        private string membersConnectionString = @"dataMembers.txt";
+        //private string clubConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+        //private string membersConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMembers.txt";
 
         public void Writer(List<IWriteable> writeables)
         {

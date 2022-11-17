@@ -8,8 +8,10 @@ namespace FitnessClub
 {
     public class Read
     {
-        private string membersConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMembers.txt";
-        private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+        private string membersConnectionString = @"dataMembers.txt";
+        private string clubsConnectionString = @"dataClubs.txt";
+        //private string membersConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMembers.txt";
+        //private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
 
         public List<IWriteable> ReadData(List<IWriteable> readables)
         {

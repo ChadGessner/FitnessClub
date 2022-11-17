@@ -12,8 +12,10 @@ Optional enhancements:
 (Hard) Out Pizza the hut 
  */
 using FitnessClub;
+using System.Reflection;
 
 DataService data = new DataService();
+/*
 Club clubOne = new Club("Club One", "123 Oak Street", 400);
 Club clubTwo = new Club("Club Two", "133 Oak Street", 500);
 List<Members> members = new()
@@ -54,7 +56,74 @@ foreach (SingleMember member in members)
 
 string clubOne1 = "Club One|123 Oak Street|400";
 string clubTwo2 = "Club Two|133 Oak Street|500";
+*/
+
 
 
 Console.WriteLine("Welcome to Pizza Hut Gym!");
+//check if user is already registered here, if not call CreateMember method below
+CreateMember();
 
+void CreateMember()
+{
+    Console.Write("Please enter your name:");
+    string userName = Console.ReadLine();
+    bool isValidDate = false;
+    DateTime dateOfBirth = default(DateTime);
+    while (!isValidDate)
+    {
+        Console.WriteLine("Please enter your date of birth (mm/dd/yyyy):");
+        string dateInput = Console.ReadLine();
+        if (!Validation.IsDate(dateInput))
+        {
+            isValidDate = false;
+            Console.WriteLine("Please enter a valid date format.");
+        }
+        else
+        {
+            isValidDate = true;
+            dateOfBirth = DateTime.Parse(dateInput);
+            break;
+        }
+    }
+    bool memberTypeValid = false;
+    string memberType = "";
+    while (!memberTypeValid)
+    {
+        Console.Write($"Which membership option would you prefer? Enter 'single' for access to one club or 'multi' for access to all clubs.");
+        memberType = Console.ReadLine().ToLower();
+        switch (memberType)
+        {
+            case "single":
+                memberTypeValid = true;
+                //Choose single club method here
+                //create single user method here
+                break;
+            case "multi":
+                memberTypeValid = true;
+                CreateMultiMember(userName, dateOfBirth);
+                break;
+            default:
+                memberTypeValid = false;
+                Console.WriteLine("That is not a valid input, please try again.");
+                break;
+        }
+    }
+
+    void CreateMultiMember(string userName, DateTime dateOfBirth)
+    {
+        MultiMember member = new MultiMember()
+        {            
+            //Id = How do we determine the next ID to use? Do we need to read the whole file into a list first?
+            FullName = userName,
+            DateOfBirth = dateOfBirth,
+            JoinDate = DateTime.Now,
+
+        };
+        data.AddMember(member);
+    }
+
+
+    Console.WriteLine("complete");
+
+}
