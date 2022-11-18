@@ -23,7 +23,10 @@ namespace FitnessClub
         {
             return $"{Type}|{Name}|{Address}|{BaseFee}";
         }
-
+        public Type GetBase() 
+        {
+            return typeof(Club);
+        }
     }
 }
 

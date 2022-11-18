@@ -16,5 +16,9 @@ namespace FitnessClub
         {
             return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}";
         }
+        public override Type GetBase()
+        {
+            return typeof(MultiMember);
+        }
     }
 }

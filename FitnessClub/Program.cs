@@ -12,49 +12,92 @@ Optional enhancements:
 (Hard) Out Pizza the hut 
  */
 using FitnessClub;
-
-DataService data = new DataService();
-Club clubOne = new Club("Club One", "123 Oak Street", 400);
-Club clubTwo = new Club("Club Two", "133 Oak Street", 500);
-List<Members> members = new()
-{
-    new SingleMember(clubOne)
-    {
-        Id = 1,
-        FullName = "Timmy",
-        DateOfBirth = DateTime.Now,
-        JoinDate = DateTime.Now,
-    },
-    new SingleMember(clubTwo)
-    {
-        Id = 2,
-        FullName = "Timmy",
-        DateOfBirth = DateTime.Now,
-        JoinDate = DateTime.Now,
-    },
-    new SingleMember(clubTwo)
-    {
-        Id = 3,
-        FullName = "Timmy",
-        DateOfBirth = DateTime.Now,
-        JoinDate = DateTime.Now,
-    },
-    new SingleMember(clubOne)
-    {
-        Id = 4,
-        FullName = "Timmy",
-        DateOfBirth = DateTime.Now,
-        JoinDate = DateTime.Now,
-    }
-};
-foreach (SingleMember member in members)
-{
-    data.AddMember(member);
-}
-
-string clubOne1 = "Club One|123 Oak Street|400";
-string clubTwo2 = "Club Two|133 Oak Street|500";
-
-
 Console.WriteLine("Welcome to Pizza Hut Gym!");
+DataService data = new DataService();
+//List<Members> members = new()
+//{
+//    new MultiMember()
+//    {
+//        Id = 1,
+//        FullName = "Sam",
+//        DateOfBirth = DateTime.Now,
+//        JoinDate = DateTime.Now,
+//    },
+//    new MultiMember()
+//    {
+//        Id = 2,
+//        FullName = "Sal",
+//        DateOfBirth = DateTime.Now,
+//        JoinDate = DateTime.Now,
+//    },
+//    new MultiMember()
+//    {
+//        Id = 3,
+//        FullName = "Sara",
+//        DateOfBirth = DateTime.Now,
+//        JoinDate = DateTime.Now,
+//    },
+//    new MultiMember()
+//    {
+//        Id = 4,
+//        FullName = "Scott",
+//        DateOfBirth = DateTime.Now,
+//        JoinDate = DateTime.Now,
+//    }
+//};
+
+
+//List<Club> clubList = new List<Club>
+//{
+//    new Club("Club One", "123 Oak Street", 400),
+//    new Club("Club Two", "222 Oak Street", 300),
+//    new Club("Club Tree", "333 Tree Street", 333),
+//    new Club("Four of Club", "444 Fourth Street", 444)
+//};
+//foreach (Club club in clubList)
+//{
+//    data.AddData(club);
+//}
+//foreach (Members member in members)
+//{
+//    data.AddData(member);
+//}
+
+
+
+
+data.LoadData();
+foreach (var member in data.AllMembers)
+{
+    Console.WriteLine(member.FullName);
+}
+foreach (var club in data.Clubs)
+{
+    Console.WriteLine(club.Name);
+}
+foreach(var member in data.SingleMembers)
+{
+    Console.WriteLine(member.FullName);
+}
+foreach(var member in data.MultiMembers)
+{
+    Console.WriteLine(member.FullName);
+}
+Console.WriteLine(data.Clubs.Count + " " + data.AllMembers.Count + " " + data.MultiMembers.Count + " " + data.SingleMembers.Count);
+Club clubFive = new Club("Club Five", "12345 Oak Street", 420);
+SingleMember dan = new(clubFive)
+{
+    FullName = "Dan",
+    DateOfBirth = DateTime.Now,
+    JoinDate = DateTime.Now,
+};
+data.AddData(clubFive);
+Console.WriteLine(data.Clubs.Count);
+
+
+
+
+
+
+
 
