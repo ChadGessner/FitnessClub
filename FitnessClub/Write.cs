@@ -8,9 +8,12 @@ namespace FitnessClub
 {
     public class Write
     {
-        //private string clubConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
-        //private string membersConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMembers.txt";
-
+        // Takes objects passed from program.cs,
+        // To the DataService() class, which passes them,
+        // To this class with a corresponding connection string,
+        // and Writer() method writes them to txt,
+        // this is going to need good validation in the program.cs,
+        // to work properly...
         public void Writer(IWriteable data, string connectionString)
         {
             using (StreamWriter sw = new StreamWriter(connectionString, true))

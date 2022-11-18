@@ -6,7 +6,22 @@ using System.Threading.Tasks;
 
 namespace FitnessClub
 {
+    
     public static class Validation
     {
+        public static bool IsDate(string userInput)
+        {
+            DateTime dateInput;
+            try
+            {
+                dateInput = DateTime.Parse(userInput);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
     }
+    
 }

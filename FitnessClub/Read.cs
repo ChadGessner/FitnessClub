@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace FitnessClub
 {
+    // Fairly straight forward, Reads data from .txt,
+    // and instantiates objects corresponding to the defined type (Types types),
+    // in the Method overload, then passes the objects to the DataService() class,
+    // which then can be accessed in program.cs,
+    // from the DataService() instance in program.cs,
+    // using the get methods I will write,
+    // for the DataService() class, 
+    // maybe didn't need its own class, oh well... Idk DataService() already does a lot...
     public class Read
     {
         public List<IWriteable> ReadData(List<IWriteable> readables, Types types, string connectionString)
