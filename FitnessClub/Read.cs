@@ -8,23 +8,20 @@ namespace FitnessClub
 {
     public class Read
     {
-        private string membersConnectionString = @"dataMembers.txt";
-        private string clubsConnectionString = @"dataClubs.txt";
-        //private string membersConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMembers.txt";
-        //private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
 
-        public List<IWriteable> ReadData(List<IWriteable> readables)
+
+        public List<IWriteable> ReadData(List<IWriteable> readables, Types types, string connectionString)
+
         {
-            string connectionString = typeof(Club) == readables[0].GetType() ? clubsConnectionString : membersConnectionString;
             string line = string.Empty;
             using (StreamReader sr = new StreamReader(connectionString))
             {
                 while ((line = sr.ReadLine()) != null)
                 {
                     string[] rawData = line.Split('|');
-                    switch (rawData[0])
+                    switch (types)
                     {
-                        case "single":
+                        case Types.single:
                             readables.Add(
                                 new SingleMember(
                                     new Club(rawData[6], rawData[7], int.Parse(rawData[8])))
@@ -35,7 +32,7 @@ namespace FitnessClub
                                     JoinDate = DateTime.Parse(rawData[4])
                                 });
                             break;
-                        case "multi":
+                        case Types.multi:
                             readables.Add(new MultiMember()
                             {
                                 Id = int.Parse(rawData[1]),
@@ -44,11 +41,12 @@ namespace FitnessClub
                                 JoinDate = DateTime.Parse(rawData[4])
                             });
                             break;
-                        case $"club":
+                        case Types.club:
                             readables.Add(new Club(rawData[1], rawData[2], int.Parse(rawData[3])));
                             break;
                     }
                 }
+                sr.Dispose();
                 sr.Close();
                 return readables;
             }

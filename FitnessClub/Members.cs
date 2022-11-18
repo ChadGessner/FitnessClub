@@ -13,7 +13,10 @@ namespace FitnessClub
         public virtual DateTime DateOfBirth { get; set; } //date time
         public virtual DateTime JoinDate { get; set; }
         public virtual Types Type { get; set; }
+        public Members()
+        {
 
+        }
         public virtual string CheckIn(Club club)
         {
             DateTime dateTime = DateTime.Now;
@@ -22,6 +25,10 @@ namespace FitnessClub
         public virtual string DataToString()
         {
             return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}";
+        }
+        public virtual Type GetBase()
+        {
+            return typeof(Members);
         }
     }
 

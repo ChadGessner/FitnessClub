@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
 DataService data = new DataService();
+data.LoadData();
 /*
 Club clubOne = new Club("Club One", "123 Oak Street", 400);
 Club clubTwo = new Club("Club Two", "133 Oak Street", 500);
@@ -68,15 +69,24 @@ string clubTwo2 = "Club Two|133 Oak Street|500";
 Console.WriteLine("Welcome to Pizza Hut Gym!");
 //check if user is already registered here, if not call CreateMember method below
 
-//CreateMember();
-ViewMemberList();
+Console.WriteLine("Enter 'new' to create a new user or enter 'view' to see a list of all members.");
+string userChoice = Console.ReadLine().ToLower();
+switch (userChoice)
+{
+    case "new":
+        CreateMember();
+        break;
+    case "view":
+        ViewMemberList();
+        break;
+}
+
 
 void ViewMemberList()
 {
-    Console.WriteLine(data.Members.Count());
-    foreach (var member in data.Members)
+    foreach (var member in data.AllMembers)
     {
-        Console.WriteLine();
+        Console.WriteLine(member.FullName);
     }
 }
 
@@ -127,7 +137,7 @@ void CreateMember()
     void CreateSingleMember(string userName, DateTime dateOfBirth)
     {
         int maxId = 0;
-        foreach (var memberEntry in data.Members)
+        foreach (var memberEntry in data.AllMembers)
         {
             if (memberEntry.Id > maxId)
             {
@@ -142,23 +152,23 @@ void CreateMember()
         }
         clubInput = Console.ReadLine().ToLower();
 
-        //Still to do
-        //SingleMember member = new SingleMember()
-        //{
-        //    Id = maxId + 1,
-        //    FullName = userName,
-        //    DateOfBirth = dateOfBirth,
-        //    JoinDate = DateTime.Now,
-        //    Club =
-        //};
-        //data.AddMember(member);
+
+            //SingleMember member = new SingleMember()
+            //{
+            //    Id = maxId + 1,
+            //    FullName = userName,
+            //    DateOfBirth = dateOfBirth,
+            //    JoinDate = DateTime.Now,
+            //    Club = clubInput
+            //};
+        //data.AddData(member);
     }
 
 
     void CreateMultiMember(string userName, DateTime dateOfBirth)
     {
         int maxId = 0;
-        foreach (var memberEntry in data.Members)
+        foreach (var memberEntry in data.AllMembers)
         {
             if (memberEntry.Id > maxId)
             {
@@ -172,7 +182,7 @@ void CreateMember()
             DateOfBirth = dateOfBirth,
             JoinDate = DateTime.Now,
         };
-        data.AddMember(member);
+        data.AddData(member);
     }
   
 
