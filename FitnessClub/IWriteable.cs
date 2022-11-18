@@ -8,6 +8,8 @@ namespace FitnessClub
 {
     public interface IWriteable
     {
+        public Types Type { get; set; }
         string DataToString();
+        Type GetBase();
     }
 }

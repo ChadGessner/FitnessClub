@@ -8,21 +8,17 @@ namespace FitnessClub
 {
     public class Write
     {
-        private string clubConnectionString = @"dataClubs.txt";
-        private string membersConnectionString = @"dataMembers.txt";
-        //private string clubConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
-        //private string membersConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMembers.txt";
 
-        public void Writer(List<IWriteable> writeables)
+
+        public void Writer(IWriteable data, string connectionString)
         {
-            string connectionString = typeof(Members) == writeables[0].GetType() || typeof(SingleMember) == writeables[0].GetType() ? membersConnectionString : clubConnectionString;
-            using (StreamWriter sw = new StreamWriter(connectionString))
+            using (StreamWriter sw = new StreamWriter(connectionString, true))
             {
-                foreach (IWriteable writeable in writeables)
-                {
-                    sw.WriteLine(writeable.DataToString());
-                }
+                sw.WriteLine(data.DataToString());
+                sw.Flush();
+                sw.Close();
             }
+            
         }
 
     }
