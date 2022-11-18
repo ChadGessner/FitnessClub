@@ -123,7 +123,6 @@ void CreateMember()
         data.AddMember(member);
     }
 
-
     Console.WriteLine("complete");
 
 }
