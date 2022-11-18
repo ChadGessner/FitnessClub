@@ -10,50 +10,43 @@ Optional enhancements:
 (Easy/Medium) Allow new members to receive discounts if they sign up during certain time periods, explore the DateTime library for help with date and time.
 (Medium) Store clubs and members in text files.
 (Hard) Out Pizza the hut 
- */
+ 
 using FitnessClub;
-using System.Reflection;
 
-DataService data = new DataService();
-/*
-Club clubOne = new Club("Club One", "123 Oak Street", 400);
-Club clubTwo = new Club("Club Two", "133 Oak Street", 500);
-List<Members> members = new()
 {
-    new SingleMember(clubOne)
-    {
-        Id = 1,
-        FullName = "Timmy",
-        DateOfBirth = DateTime.Now,
-        JoinDate = DateTime.Now,
-    },
-    new SingleMember(clubTwo)
-    {
-        Id = 2,
-        FullName = "Timmy",
-        DateOfBirth = DateTime.Now,
-        JoinDate = DateTime.Now,
-    },
-    new SingleMember(clubTwo)
-    {
-        Id = 3,
-        FullName = "Timmy",
-        DateOfBirth = DateTime.Now,
-        JoinDate = DateTime.Now,
-    },
-    new SingleMember(clubOne)
-    {
-        Id = 4,
-        FullName = "Timmy",
-        DateOfBirth = DateTime.Now,
-        JoinDate = DateTime.Now,
-    }
-};
-foreach (SingleMember member in members)
-{
-    data.AddMember(member);
+    Console.WriteLine(member.FullName);
 }
+foreach (var club in data.Clubs)
+{
+    Console.WriteLine(club.Name);
+}
+foreach(var member in data.SingleMembers)
+{
+    Console.WriteLine(member.FullName);
+}
+foreach(var member in data.MultiMembers)
+{
+    Console.WriteLine(member.FullName);
+}
+Console.WriteLine(data.Clubs.Count + " " + data.AllMembers.Count + " " + data.MultiMembers.Count + " " + data.SingleMembers.Count);
+Club clubFive = new Club("Club Five", "12345 Oak Street", 420);
+SingleMember dan = new(clubFive)
+{
+    FullName = "Dan",
+    DateOfBirth = DateTime.Now,
+    JoinDate = DateTime.Now,
+};
+data.AddData(clubFive);
+Console.WriteLine(data.Clubs.Count);
 
+
+
+
+
+
+
+
+=======
 string clubOne1 = "Club One|123 Oak Street|400";
 string clubTwo2 = "Club Two|133 Oak Street|500";
 */
@@ -110,6 +103,7 @@ void CreateMember()
         }
     }
 
+
     void CreateMultiMember(string userName, DateTime dateOfBirth)
     {
         MultiMember member = new MultiMember()
@@ -127,3 +121,4 @@ void CreateMember()
     Console.WriteLine("complete");
 
 }
+*/
