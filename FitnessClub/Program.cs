@@ -1,23 +1,52 @@
-﻿/*
- Allow users to:
-Add members (both kinds), remove members or display member information.
-Check a particular member in at a particular club. (Call the CheckIn method). Display a friendly error message if there is an exception. Don’t let it crash the program.
-Select a member and generate a bill of fees. Include membership points for Multi-Club Members.
-A main class which takes input from the user:
-Asks a user if they want to select a club
-Added members should be given the option to select from at least 4 fitness center locations or have the option to be a multi-club member.
-Optional enhancements:
-(Easy/Medium) Allow new members to receive discounts if they sign up during certain time periods, explore the DateTime library for help with date and time.
-(Medium) Store clubs and members in text files.
-(Hard) Out Pizza the hut 
- 
+﻿
+
 using FitnessClub;
-Console.WriteLine("Welcome to Pizza Hut Gym!");
+// ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
 DataService data = new DataService();
-data.LoadData();
+// ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
+data.LoadData(); // <--- Loads all data from Db
+/*
+    *** Data Query Methods ***
+    data.GetClubs()
+    data.GetClubByIndex(int index)
+    data.GetClubByName(string name)
+    data.GetAllMembers() 
+    data.GetAllSingleMembers() 
+    data.GetAllMultiMembers()
+    *** Method for adding Data ***
+    data.AddData()
+ */
+
+
 Console.WriteLine("Welcome to Pizza Hut Gym!");
+
 //check if user is already registered here, if not call CreateMember method below
-CreateMember();
+
+Console.WriteLine("Enter 'check' to check into a gym, enter 'new' to create a new user or enter 'view' to see a list of all members.");
+string userChoice = Console.ReadLine().ToLower();
+switch (userChoice)
+{
+    case "check":
+    //call check-in method here
+    case "new":
+        CreateMember();
+        break;
+    case "view":
+        ViewMemberList();
+        break;
+}
+
+
+void ViewMemberList()
+{
+
+    Console.WriteLine($"{"ID",-5} {"Name",-15} {"Date of Birth",-15} {"Join Date",-15} {"Member Type",-11}");
+    Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"--------------",-15} {"-----------",-11}");
+    foreach (var member in data.GetAllMembers())
+    {
+        Console.WriteLine($"{member.Id,-5} {member.FullName,-15} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-10}");
+    }
+}
 
 void CreateMember()
 {
@@ -25,6 +54,9 @@ void CreateMember()
     string userName = Console.ReadLine();
     bool isValidDate = false;
     DateTime dateOfBirth = default(DateTime);
+
+    QualifyForDiscount();
+
     while (!isValidDate)
     {
         Console.WriteLine("Please enter your date of birth (mm/dd/yyyy):");
@@ -51,8 +83,7 @@ void CreateMember()
         {
             case "single":
                 memberTypeValid = true;
-                //Choose single club method here
-                //create single user method here
+                CreateSingleMember(userName, dateOfBirth);
                 break;
             case "multi":
                 memberTypeValid = true;
@@ -63,109 +94,79 @@ void CreateMember()
                 Console.WriteLine("That is not a valid input, please try again.");
                 break;
         }
+
+
     }
 
-
-    void CreateMultiMember(string userName, DateTime dateOfBirth)
+    bool QualifyForDiscount()
     {
-        MultiMember member = new MultiMember()
-        {
-            //Id = How do we determine the next ID to use? Do we need to read the whole file into a list first?
-            FullName = userName,
-            DateOfBirth = dateOfBirth,
-            JoinDate = DateTime.Now,
+        DateTime dateStart = new DateTime(2022, 11, 01);
+        DateTime dateEnd = new DateTime(2022, 11, 30);
+        int discountPercent = 15;
 
-        };
-        member.GetUniqueId();
-        Console.WriteLine(member.Id);
+        if (DateTime.Now >= dateStart && DateTime.Now <= dateEnd)
+        {
+            Console.WriteLine($"Congratulations, we are currently offering a discount for signing up this month. Save {discountPercent}%");
+            return true;
+        }
+        else return false;
+    }
+
+    void CreateSingleMember(string userName, DateTime dateOfBirth)
+    {
+        int maxId = 0;
+        foreach (var memberEntry in data.GetAllMembers())
+        {
+            if (memberEntry.Id > maxId)
+            {
+                maxId = memberEntry.Id;
+            }
+        }
+        string clubInput = "";
+        Console.WriteLine("Please select a club from the list below");
+        foreach (Club club in data.GetClubs())
+        {
+            Console.WriteLine(club.Name);
+        }
+
+        clubInput = Console.ReadLine().ToLower();
+        Club selectedClub = data.GetClubs()[int.Parse(clubInput) - 1];
+
+            SingleMember member = new SingleMember(selectedClub)
+            {
+                Id = maxId + 1,
+                FullName = userName,
+                DateOfBirth = dateOfBirth,
+                JoinDate = DateTime.Now,
+                //Club = clubInput
+            };
         data.AddData(member);
     }
 
 
-    Console.WriteLine("complete");
-    Console.WriteLine(data.AllMembers.Count());
-}
-
-
-
-
-
-
-
-
-=======
-string clubOne1 = "Club One|123 Oak Street|400";
-string clubTwo2 = "Club Two|133 Oak Street|500";
-*/
-
-
-
-Console.WriteLine("Welcome to Pizza Hut Gym!");
-//check if user is already registered here, if not call CreateMember method below
-CreateMember();
-
-void CreateMember()
-{
-    Console.Write("Please enter your name:");
-    string userName = Console.ReadLine();
-    bool isValidDate = false;
-    DateTime dateOfBirth = default(DateTime);
-    while (!isValidDate)
-    {
-        Console.WriteLine("Please enter your date of birth (mm/dd/yyyy):");
-        string dateInput = Console.ReadLine();
-        if (!Validation.IsDate(dateInput))
-        {
-            isValidDate = false;
-            Console.WriteLine("Please enter a valid date format.");
-        }
-        else
-        {
-            isValidDate = true;
-            dateOfBirth = DateTime.Parse(dateInput);
-            break;
-        }
-    }
-    bool memberTypeValid = false;
-    string memberType = "";
-    while (!memberTypeValid)
-    {
-        Console.Write($"Which membership option would you prefer? Enter 'single' for access to one club or 'multi' for access to all clubs.");
-        memberType = Console.ReadLine().ToLower();
-        switch (memberType)
-        {
-            case "single":
-                memberTypeValid = true;
-                //Choose single club method here
-                //create single user method here
-                break;
-            case "multi":
-                memberTypeValid = true;
-                CreateMultiMember(userName, dateOfBirth);
-                break;
-            default:
-                memberTypeValid = false;
-                Console.WriteLine("That is not a valid input, please try again.");
-                break;
-        }
-    }
-
-
     void CreateMultiMember(string userName, DateTime dateOfBirth)
     {
+        int maxId = 0;
+        foreach (var memberEntry in data.GetAllMembers())
+        {
+            if (memberEntry.Id > maxId)
+            {
+                maxId = memberEntry.Id;
+            }
+        }
         MultiMember member = new MultiMember()
-        {            
-            //Id = How do we determine the next ID to use? Do we need to read the whole file into a list first?
+        {
+            Id = maxId + 1,
             FullName = userName,
             DateOfBirth = dateOfBirth,
             JoinDate = DateTime.Now,
-
         };
-        data.AddMember(member);
+        data.AddData(member);
     }
+
+
 
 
     Console.WriteLine("complete");
 
 }
-*/

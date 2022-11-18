@@ -14,18 +14,38 @@ namespace FitnessClub
         private string multiMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
         private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
         // ---> **** Change Connection strings to correspond to your local repository **** <---
-        public List<SingleMember> SingleMembers { get; set; } = new List<SingleMember>();
-        public List<MultiMember> MultiMembers { get; set; } = new List<MultiMember>();
-        public List<Members> AllMembers { get; set; } = new List<Members>();   
-        public List<Club> Clubs { get; set; } = new List<Club>();
-        public Read Reader { get; set; } = new Read();
-        public Write Writer { get; set; } = new Write();
+        private List<SingleMember> SingleMembers { get; set; } = new List<SingleMember>();
+        private List<MultiMember> MultiMembers { get; set; } = new List<MultiMember>();
+        private List<Members> AllMembers { get; set; } = new List<Members>();   
+        private List<Club> Clubs { get; set; } = new List<Club>();
+        private Read Reader { get; set; } = new Read();
+        private Write Writer { get; set; } = new Write();
         public DataService()
         {
             
         }
+        // Methods added for querying in memory data
+        public List<Club> GetClubs()
+        {
+            return Clubs;
+        }
+        public Club GetClubByIndex(int index)
+        {
+            return Clubs[index];
+        }
+        public Club GetClubByName(string name)
+        {
+            return Clubs
+                .SingleOrDefault(c => c.Name
+                .ToLower() == name
+                .ToLower());
+        }
+        public List<Members> GetAllMembers() => AllMembers;
+        public List<SingleMember> GetAllSingleMembers() => SingleMembers;
+        public List<MultiMember> GetAllMultiMembers() => MultiMembers;
+        
         // Algorithm for merging SingleMember() and MultiMember() to one Array for fetch methods etc...
-        private void GetAllMembers()
+        private void GetAllMembersForDb()
         {
             AllMembers = SingleMembers
                     .Select(s => (Members)s)
@@ -93,7 +113,7 @@ namespace FitnessClub
                     WriteData(data, GetConnectionString(data.Type));
                     break;
             }
-            GetAllMembers();
+            GetAllMembersForDb();
         }
         // Helper method for above AddData() Method, I may simplify this later...
         private void WriteData(IWriteable data, string connectionString)
