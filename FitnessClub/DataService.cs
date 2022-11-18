@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,10 +26,7 @@ namespace FitnessClub
             
         }
         // Methods added for querying in memory data
-        public List<Club> GetClubs()
-        {
-            return Clubs;
-        }
+        public List<Club> GetClubs() => Clubs;
         public Club GetClubByIndex(int index)
         {
             return Clubs[index];
@@ -43,6 +41,30 @@ namespace FitnessClub
         public List<Members> GetAllMembers() => AllMembers;
         public List<SingleMember> GetAllSingleMembers() => SingleMembers;
         public List<MultiMember> GetAllMultiMembers() => MultiMembers;
+        public List<Members> GetMembersByName(string name) => AllMembers
+            .Where(m => m.FullName
+            .ToLower() == name
+            .ToLower()
+            .Trim())
+            .ToList();
+        public Members GetMemberByNameAndDateOfBirth(string name, DateTime dob)
+        {
+            Members member = AllMembers
+            .Single(m => m.FullName.ToLower().Trim() == name.ToLower().Trim() );
+            return member.Type == Types.single ? (SingleMember)member : (MultiMember)member;
+        }
+        public bool CheckIfMemberAlreadyRegistered(Members member)
+        {
+            try
+            {
+                GetMemberByNameAndDateOfBirth(member.FullName, member.DateOfBirth);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         
         // Algorithm for merging SingleMember() and MultiMember() to one Array for fetch methods etc...
         private void GetAllMembersForDb()
@@ -89,7 +111,6 @@ namespace FitnessClub
                     default:
                         break;
                 }
-                
             }
         }
         // Method for adding data, first loads it in local memory, the lists at the top,
@@ -140,6 +161,7 @@ namespace FitnessClub
                     Clubs = Reader.ReadData(list, types, connectionString).Select(c => (Club)c).ToList();
                     break;
             }
+            GetAllMembersForDb();
             
         }
         // ToListIWriteable() method casts list from SingleMember(), MultiMember() or Club() to IWriteable for the read and write methods...

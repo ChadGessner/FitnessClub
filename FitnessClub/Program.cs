@@ -7,12 +7,14 @@ DataService data = new DataService();
 data.LoadData(); // <--- Loads all data from Db
 /*
     *** Data Query Methods ***
-    data.GetClubs()
-    data.GetClubByIndex(int index)
-    data.GetClubByName(string name)
-    data.GetAllMembers() 
-    data.GetAllSingleMembers() 
-    data.GetAllMultiMembers()
+    data.GetClubs() <-- Returns list of all clubs
+    data.GetClubByIndex(int index) <-- Returns single club within data.Clubs with that index
+    data.GetClubByName(string name) <-- Returns single Club object from Clubs or an empty Club instance, will need to be validated or it will break the application
+    data.GetAllMembers()  <-- Returns list of all Members
+    data.GetAllSingleMembers() <-- Returns list of all SingleMembers
+    data.GetAllMultiMembers() <-- Returns list of all MultiMembers
+    data.GetMemberByNameAndDateOfBirth(string name, DateTime dob) <-- Returns member from AllMembers and casts it appropriately, throws exception if member does not exist
+    data.CheckIfMemberAlreadyRegistered(Members member) <-- Returns true if the Member exists else false
     *** Method for adding Data ***
     data.AddData()
  */
