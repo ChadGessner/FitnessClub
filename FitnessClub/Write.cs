@@ -18,7 +18,7 @@ namespace FitnessClub
                 sw.Flush();
                 sw.Close();
             }
-            
+
         }
 
     }

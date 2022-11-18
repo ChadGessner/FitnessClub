@@ -9,18 +9,22 @@ namespace FitnessClub
 {
     public class DataService // Controls flow of data from back to front
     {
-        private string singleMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
-        private string multiMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
-        private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+        
+        private string singleMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
+        private string multiMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
+        private string clubsConnectionString = @"C:\Users\danin\source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+        //private string singleMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
+        //private string multiMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
+        //private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
         public List<SingleMember> SingleMembers { get; set; } = new List<SingleMember>();
         public List<MultiMember> MultiMembers { get; set; } = new List<MultiMember>();
-        public List<Members> AllMembers { get; set; } = new List<Members>();   
+        public List<Members> AllMembers { get; set; } = new List<Members>();
         public List<Club> Clubs { get; set; } = new List<Club>();
         public Read Reader { get; set; } = new Read();
         public Write Writer { get; set; } = new Write();
         public DataService()
         {
-            
+
         }
         private string GetConnectionString(Types types)
         {
@@ -38,26 +42,28 @@ namespace FitnessClub
         }
         public void LoadData()
         {
-            foreach(Types type in (Types[]) Enum.GetValues(typeof(Types)))
+            foreach (Types type in (Types[])Enum.GetValues(typeof(Types)))
             {
                 string connectionString = GetConnectionString(type);
                 switch (type)
                 {
                     case Types.single:
-                        
+
                         ReadData(ToListIWriteable(SingleMembers), type, connectionString);
                         break;
                     case Types.multi:
-                        
+
                         ReadData(ToListIWriteable(MultiMembers), type, connectionString);
                         break;
                     case Types.club:
-                        
+
                         ReadData(ToListIWriteable(Clubs), type, connectionString);
                         break;
                     default:
                         break;
                 }
+                AllMembers = SingleMembers.Select(s => (Members)s).Concat(MultiMembers.Select(m => (Members)m)).ToList();
+
             }
         }
         public void AddData(IWriteable data)
@@ -79,11 +85,11 @@ namespace FitnessClub
                     WriteData(data, GetConnectionString(data.Type));
                     break;
             }
-            
+
         }
         private void WriteData(IWriteable data, string connectionString)
         {
-            
+
             Writer.Writer(data, connectionString);
         }
         public void ReadData(List<IWriteable> list, Types types, string connectionString)
@@ -100,7 +106,7 @@ namespace FitnessClub
                     Clubs = Reader.ReadData(list, types, connectionString).Select(c => (Club)c).ToList();
                     break;
             }
-            
+
         }
         private List<IWriteable> ToListIWriteable<T>(List<T> list) where T : class
         {

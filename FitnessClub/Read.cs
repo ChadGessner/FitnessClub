@@ -10,7 +10,8 @@ namespace FitnessClub
     {
 
 
-        public List<IWriteable> ReadData(List<IWriteable> readables)
+        public List<IWriteable> ReadData(List<IWriteable> readables, Types types, string connectionString)
+
 
         {
             string line = string.Empty;
