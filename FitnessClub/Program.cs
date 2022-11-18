@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
@@ -15,10 +16,12 @@ Console.WriteLine("Welcome to Pizza Hut Gym!");
 
 //check if user is already registered here, if not call CreateMember method below
 
-Console.WriteLine("Enter 'new' to create a new user or enter 'view' to see a list of all members.");
+Console.WriteLine("Enter 'check' to check into a gym, enter 'new' to create a new user or enter 'view' to see a list of all members.");
 string userChoice = Console.ReadLine().ToLower();
 switch (userChoice)
 {
+    case "check":
+    //call check-in method here
     case "new":
         CreateMember();
         break;
@@ -30,9 +33,12 @@ switch (userChoice)
 
 void ViewMemberList()
 {
+
+    Console.WriteLine($"{"ID", -5} {"Name",-15} {"Date of Birth",-15} {"Join Date",-15} {"Member Type",-11}");
+    Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"--------------",-15} {"-----------",-11}");
     foreach (var member in data.AllMembers)
     {
-        Console.WriteLine(member.FullName);
+        Console.WriteLine($"{member.Id,-5} {member.FullName,-15} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-10}");
     }
 }
 
@@ -42,6 +48,9 @@ void CreateMember()
     string userName = Console.ReadLine();
     bool isValidDate = false;
     DateTime dateOfBirth = default(DateTime);
+
+    QualifyForDiscount();
+
     while (!isValidDate)
     {
         Console.WriteLine("Please enter your date of birth (mm/dd/yyyy):");
@@ -79,7 +88,24 @@ void CreateMember()
                 Console.WriteLine("That is not a valid input, please try again.");
                 break;
         }
+
+        
     }
+
+    bool QualifyForDiscount()
+    {
+        DateTime dateStart = new DateTime (2022, 11, 01);
+        DateTime dateEnd = new DateTime(2022, 11, 30);
+        int discountPercent = 15;
+
+        if (DateTime.Now >= dateStart && DateTime.Now <= dateEnd)
+        {
+            Console.WriteLine($"Congratulations, we are currently offering a discount for signing up this month. Save {discountPercent}%");
+            return true;
+        }
+        else return false;
+    }
+
     void CreateSingleMember(string userName, DateTime dateOfBirth)
     {
         int maxId = 0;
@@ -92,21 +118,22 @@ void CreateMember()
         }
         string clubInput = "";
         Console.WriteLine("Please select a club from the list below");
-        foreach (var club in data.Clubs)
+        foreach (Club club in data.Clubs)
         {
             Console.WriteLine(club.Name);
         }
+                       
         clubInput = Console.ReadLine().ToLower();
 
-        //STILL TO FINISH
-            //SingleMember member = new SingleMember()
-            //{
-            //    Id = maxId + 1,
-            //    FullName = userName,
-            //    DateOfBirth = dateOfBirth,
-            //    JoinDate = DateTime.Now,
-            //    Club = clubInput
-            //};
+
+        //    SingleMember member = new SingleMember(clubInput)
+        //    {
+        //        Id = maxId + 1,
+        //        FullName = userName,
+        //        DateOfBirth = dateOfBirth,
+        //        JoinDate = DateTime.Now,
+        //        Club = clubInput
+        //    };
         //data.AddData(member);
     }
 
@@ -130,9 +157,9 @@ void CreateMember()
         };
         data.AddData(member);
     }
-  
 
-    
+
+
 
     Console.WriteLine("complete");
 
