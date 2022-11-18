@@ -8,7 +8,10 @@ namespace FitnessClub
 {
     public class Read
     {
-        public List<IWriteable> ReadData(List<IWriteable> readables, Types types, string connectionString)
+
+
+        public List<IWriteable> ReadData(List<IWriteable> readables)
+
         {
             string line = string.Empty;
             using (StreamReader sr = new StreamReader(connectionString))
