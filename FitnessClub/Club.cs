@@ -6,13 +6,23 @@ using System.Threading.Tasks;
 
 namespace FitnessClub
 {
-    public class Club
+    public class Club : IWriteable
     {
         public string Name { get; set; }
         public string Address { get; set; }
-
-        //Club level status (status tbd)?
         public int BaseFee { get; set; }
+        public List<Members> ClubMembers { get; set; }
+        public Types Type { get; set; } = (Types)2;
+        public Club(string name, string address, int baseFee)
+        {
+            Name = name;
+            Address = address;
+            BaseFee = baseFee;
+        }
+        public string DataToString()
+        {
+            return $"{Type}|{Name}|{Address}|{BaseFee}";
+        }
 
     }
 }
