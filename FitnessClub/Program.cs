@@ -12,7 +12,12 @@ Optional enhancements:
 (Hard) Out Pizza the hut 
  */
 using FitnessClub;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
+using System.Data.Common;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 DataService data = new DataService();
 /*
@@ -62,7 +67,18 @@ string clubTwo2 = "Club Two|133 Oak Street|500";
 
 Console.WriteLine("Welcome to Pizza Hut Gym!");
 //check if user is already registered here, if not call CreateMember method below
-CreateMember();
+
+//CreateMember();
+ViewMemberList();
+
+void ViewMemberList()
+{
+    Console.WriteLine(data.Members.Count());
+    foreach (var member in data.Members)
+    {
+        Console.WriteLine();
+    }
+}
 
 void CreateMember()
 {
@@ -96,8 +112,7 @@ void CreateMember()
         {
             case "single":
                 memberTypeValid = true;
-                //Choose single club method here
-                //create single user method here
+                CreateSingleMember(userName, dateOfBirth);
                 break;
             case "multi":
                 memberTypeValid = true;
@@ -109,20 +124,59 @@ void CreateMember()
                 break;
         }
     }
+    void CreateSingleMember(string userName, DateTime dateOfBirth)
+    {
+        int maxId = 0;
+        foreach (var memberEntry in data.Members)
+        {
+            if (memberEntry.Id > maxId)
+            {
+                maxId = memberEntry.Id;
+            }
+        }
+        string clubInput = "";
+        Console.WriteLine("Please select a club from the list below");
+        foreach (var club in data.Clubs)
+        {
+            Console.WriteLine(club.Name);
+        }
+        clubInput = Console.ReadLine().ToLower();
+
+        //Still to do
+        //SingleMember member = new SingleMember()
+        //{
+        //    Id = maxId + 1,
+        //    FullName = userName,
+        //    DateOfBirth = dateOfBirth,
+        //    JoinDate = DateTime.Now,
+        //    Club =
+        //};
+        //data.AddMember(member);
+    }
+
 
     void CreateMultiMember(string userName, DateTime dateOfBirth)
     {
+        int maxId = 0;
+        foreach (var memberEntry in data.Members)
+        {
+            if (memberEntry.Id > maxId)
+            {
+                maxId = memberEntry.Id;
+            }
+        }
         MultiMember member = new MultiMember()
-        {            
-            //Id = How do we determine the next ID to use? Do we need to read the whole file into a list first?
+        {
+            Id = maxId + 1,
             FullName = userName,
             DateOfBirth = dateOfBirth,
             JoinDate = DateTime.Now,
-
         };
         data.AddMember(member);
     }
+  
 
+    
 
     Console.WriteLine("complete");
 
