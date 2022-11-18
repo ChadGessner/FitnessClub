@@ -19,6 +19,9 @@ namespace FitnessClub
         {
             return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}|{Club.DataToString()}";
         }
-
+        public override Type GetBase()
+        {
+            return typeof(SingleMember);
+        }
     }
 }
