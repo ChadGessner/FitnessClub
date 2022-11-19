@@ -10,6 +10,7 @@ namespace FitnessClub
 {
     public class DataService // Controls flow of data from back to front
     {
+
         // ---> **** Change Connection strings to correspond to your local repository **** <---
         private string singleMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
         private string multiMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
@@ -21,9 +22,10 @@ namespace FitnessClub
         private List<Club> Clubs { get; set; } = new List<Club>();
         private Read Reader { get; set; } = new Read();
         private Write Writer { get; set; } = new Write();
+
         public DataService()
         {
-            
+
         }
         // Methods added for querying in memory data
         public List<Club> GetClubs() => Clubs;
@@ -93,24 +95,28 @@ namespace FitnessClub
         // Loads all data from .txt file, this should be the first method called in program.cs after the DataService class is constructed
         public void LoadData()
         {
-            foreach(Types type in (Types[]) Enum.GetValues(typeof(Types)))
+            foreach (Types type in (Types[])Enum.GetValues(typeof(Types)))
             {
                 string connectionString = GetConnectionString(type);
                 switch (type)
                 {
                     case Types.single:
-                        
+
                         ReadData(ToListIWriteable(SingleMembers), type, connectionString);
                         break;
                     case Types.multi:
+
                         ReadData(ToListIWriteable(MultiMembers), type, connectionString);
                         break;
                     case Types.club:
+
                         ReadData(ToListIWriteable(Clubs), type, connectionString);
                         break;
                     default:
                         break;
                 }
+                AllMembers = SingleMembers.Select(s => (Members)s).Concat(MultiMembers.Select(m => (Members)m)).ToList();
+
             }
         }
         // Method for adding data, first loads it in local memory, the lists at the top,
@@ -134,11 +140,14 @@ namespace FitnessClub
                     WriteData(data, GetConnectionString(data.Type));
                     break;
             }
+
             GetAllMembersForDb();
+
         }
         // Helper method for above AddData() Method, I may simplify this later...
         private void WriteData(IWriteable data, string connectionString)
         {
+
             Writer.Writer(data, connectionString);
         }
         // I will write DeleteData() today...
@@ -161,8 +170,9 @@ namespace FitnessClub
                     Clubs = Reader.ReadData(list, types, connectionString).Select(c => (Club)c).ToList();
                     break;
             }
+
             GetAllMembersForDb();
-            
+
         }
         // ToListIWriteable() method casts list from SingleMember(), MultiMember() or Club() to IWriteable for the read and write methods...
         // Something something polymorphism, something something...
