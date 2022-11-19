@@ -3,22 +3,43 @@
 using FitnessClub;
 // ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
 DataService data = new DataService();
+
 // ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
-data.LoadData(); // <--- Loads all data from Db
+// data.LoadData() is now private and located in the DataService constructor so it never needs to be called again <--- Loads all data from Db
 /*
     *** Data Query Methods ***
     data.GetClubs() <-- Returns list of all clubs
+    data.GetCheckIns() <-- Returns List of all CheckIn objects
+    data.GetCheckInsByMember(Members member) <-- Returns all CheckIn objects associate with that member, casts accordingly
+    data.GetCheckInsByClub(Club club) <-- Returns all CheckIn objects associated with that club
+    data.GetCheckinsByDate(DateTime dateTime) <-- Returns all CheckIn objects according to the Date, technically works but wont be very usefull yet
     data.GetClubByIndex(int index) <-- Returns single club within data.Clubs with that index
     data.GetClubByName(string name) <-- Returns single Club object from Clubs or an empty Club instance, will need to be validated or it will break the application
     data.GetAllMembers()  <-- Returns list of all Members
     data.GetAllSingleMembers() <-- Returns list of all SingleMembers
     data.GetAllMultiMembers() <-- Returns list of all MultiMembers
+    data.GetMemberById(int id) <--  Returns the Member from AllMembers with corresponding Id value, will throw exception if Member with that id does not exist, needs a validation
+    data.GetMembersByName(string name) <-- Returns ***List of Members*** with matching name
     data.GetMemberByNameAndDateOfBirth(string name, DateTime dob) <-- Returns member from AllMembers and casts it appropriately, throws exception if member does not exist
     data.CheckIfMemberAlreadyRegistered(Members member) <-- Returns true if the Member exists else false
-    *** Method for adding Data ***
-    data.AddData()
+    data.GetNextId() <-- Returns Max Id + 1
+     
+    
+    
+    *** Methods for database operation ***
+    --> All these methods take an instance of any class that implements IWriteable <--
+    --> This includes Club(), Members(), SingleMember(), MultiMember() and CheckIn() <--
+    data.AddData(IWriteable data) <-- adds object to in memory datalists, then overwrites .txt with the appended list
+    data.DeleteData(IWriteable data) <-- deletes object from memory, then overwrietes .txt file with the altered list
  */
-
+foreach (MultiMember multi in data.GetAllMultiMembers())
+{
+    data.AddData(multi.CheckIn(data.GetClubByIndex(3)));
+}
+DateTime date = DateTime.Now;
+Console.WriteLine(data.GetCheckIns().Count);
+Console.WriteLine(date.ToShortDateString());
+Console.WriteLine(data.GetCheckInsByMember(data.GetMemberById(6))[0].DateTime.ToShortDateString());
 
 Console.WriteLine("Welcome to Pizza Hut Gym!");
 
@@ -148,7 +169,7 @@ void CreateMember()
 
     void CreateMultiMember(string userName, DateTime dateOfBirth)
     {
-        int maxId = 0;
+        int maxId = data.GetNextId();
         foreach (var memberEntry in data.GetAllMembers())
         {
             if (memberEntry.Id > maxId)
@@ -158,7 +179,7 @@ void CreateMember()
         }
         MultiMember member = new MultiMember()
         {
-            Id = maxId + 1,
+            Id = maxId,
             FullName = userName,
             DateOfBirth = dateOfBirth,
             JoinDate = DateTime.Now,
