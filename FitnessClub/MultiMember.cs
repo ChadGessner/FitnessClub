@@ -9,8 +9,14 @@ namespace FitnessClub
     public class MultiMember : Members
     {
         public override Types Type { get; set; } = (Types)1;
-        //public List<Club> Club { get; set; }
-
+        public MultiMember()
+        {
+            
+        }
+        public override int GetUniqueId()
+        {
+            return Id = Math.Abs(base.GetUniqueId() / (int)Type + 2);
+        }
         public override string CheckIn(Club club) => base.CheckIn(club);
         public override string DataToString()
         {
