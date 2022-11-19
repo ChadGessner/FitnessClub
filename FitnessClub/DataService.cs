@@ -12,9 +12,9 @@ namespace FitnessClub
     {
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---
-        private string singleMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
-        private string multiMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
-        private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+        private string singleMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
+        private string multiMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
+        private string clubsConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
         // ---> **** Change Connection strings to correspond to your local repository **** <---
         private List<SingleMember> SingleMembers { get; set; } = new List<SingleMember>();
         private List<MultiMember> MultiMembers { get; set; } = new List<MultiMember>();
