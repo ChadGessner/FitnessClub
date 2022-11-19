@@ -16,7 +16,9 @@ namespace FitnessClub
     // maybe didn't need its own class, oh well... Idk DataService() already does a lot...
     public class Read
     {
+
         public List<IWriteable> ReadData(List<IWriteable> readables, Types types, string connectionString)        
+
 
         {
             string line = string.Empty;

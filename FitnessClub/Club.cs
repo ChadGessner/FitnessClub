@@ -23,7 +23,7 @@ namespace FitnessClub
         {
             return $"{Type}|{Name}|{Address}|{BaseFee}";
         }
-        public Type GetBase() 
+        public Type GetBase()
         {
             return typeof(Club);
         }
@@ -32,4 +32,3 @@ namespace FitnessClub
 
 
 // create list of 4 clubs, plus a multi option
-

@@ -1,5 +1,6 @@
 ﻿
 
+
 using FitnessClub;
 // ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
 DataService data = new DataService();
@@ -41,6 +42,7 @@ Console.WriteLine(data.GetCheckIns().Count);
 Console.WriteLine(date.ToShortDateString());
 Console.WriteLine(data.GetCheckInsByMember(data.GetMemberById(6))[0].DateTime.ToShortDateString());
 
+
 Console.WriteLine("Welcome to Pizza Hut Gym!");
 
 //check if user is already registered here, if not call CreateMember method below
@@ -63,9 +65,11 @@ switch (userChoice)
 void ViewMemberList()
 {
 
+
     Console.WriteLine($"{"ID",-5} {"Name",-15} {"Date of Birth",-15} {"Join Date",-15} {"Member Type",-11}");
     Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"--------------",-15} {"-----------",-11}");
     foreach (var member in data.GetAllMembers())
+
     {
         Console.WriteLine($"{member.Id,-5} {member.FullName,-15} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-10}");
     }
@@ -118,12 +122,12 @@ void CreateMember()
                 break;
         }
 
-
     }
 
     bool QualifyForDiscount()
     {
-        DateTime dateStart = new DateTime(2022, 11, 01);
+
+        DateTime dateStart = new DateTime (2022, 11, 01);
         DateTime dateEnd = new DateTime(2022, 11, 30);
         int discountPercent = 15;
 
@@ -138,7 +142,9 @@ void CreateMember()
     void CreateSingleMember(string userName, DateTime dateOfBirth)
     {
         int maxId = 0;
+
         foreach (var memberEntry in data.GetAllMembers())
+
         {
             if (memberEntry.Id > maxId)
             {
@@ -147,6 +153,7 @@ void CreateMember()
         }
         string clubInput = "";
         Console.WriteLine("Please select a club from the list below");
+
         foreach (Club club in data.GetClubs())
         {
             Console.WriteLine(club.Name);
@@ -164,6 +171,7 @@ void CreateMember()
                 //Club = clubInput
             };
         data.AddData(member);
+
     }
 
 
@@ -171,6 +179,7 @@ void CreateMember()
     {
         int maxId = data.GetNextId();
         foreach (var memberEntry in data.GetAllMembers())
+
         {
             if (memberEntry.Id > maxId)
             {
@@ -192,4 +201,6 @@ void CreateMember()
 
     Console.WriteLine("complete");
 
+
 }
+
