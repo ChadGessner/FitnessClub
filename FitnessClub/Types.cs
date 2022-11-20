@@ -14,6 +14,7 @@ namespace FitnessClub
     {
         single,
         multi,
-        club
+        club,
+        checkin
     }
 }
