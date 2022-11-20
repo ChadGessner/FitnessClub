@@ -2,6 +2,8 @@
 
 
 using FitnessClub;
+using System.Dynamic;
+using System.Net.Http.Headers;
 // ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
 DataService data = new DataService();
 
@@ -47,7 +49,12 @@ Console.WriteLine("Welcome to Pizza Hut Gym!");
 
 //check if user is already registered here, if not call CreateMember method below
 
-Console.WriteLine("Enter 'check' to check into a gym, enter 'new' to create a new user or enter 'view' to see a list of all members.");
+Console.WriteLine("What would you like to do today?");
+Console.WriteLine("Enter 'check' to check a member into a club");
+Console.WriteLine("Enter 'new' to create a new member");
+Console.WriteLine("Enter 'view' to view all members");
+Console.WriteLine("Enter 'delete' to delete a member");
+
 string userChoice = Console.ReadLine().ToLower();
 switch (userChoice)
 {
@@ -59,19 +66,46 @@ switch (userChoice)
     case "view":
         ViewMemberList();
         break;
+    case "delete":
+        DeleteMember();
+        break;
 }
 
 
 void ViewMemberList()
 {
-
-
     Console.WriteLine($"{"ID",-5} {"Name",-15} {"Date of Birth",-15} {"Join Date",-15} {"Member Type",-11}");
     Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"--------------",-15} {"-----------",-11}");
     foreach (var member in data.GetAllMembers())
 
     {
         Console.WriteLine($"{member.Id,-5} {member.FullName,-15} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-10}");
+    }
+}
+
+void DeleteMember()
+{
+    Console.Write("Enter the ID for the member to delete, type 'view' to display a list of all members:");
+    string userInput = Console.ReadLine().ToLower();
+    switch (userInput)
+    {
+        case "view":
+            ViewMemberList();
+            Console.Write("Enter the ID for the member to delete:");
+            break;
+        default:
+            //will need validation to check if INT has been entered.
+            Console.WriteLine("Are you sure you wish to delete this member? (y/n)");
+            string userConfirm = Console.ReadLine().ToLower();
+            if (userConfirm == "y")
+            {
+                // will need to remove member from List, clear txt file and re-write List here
+            }
+            else
+            {
+                break;
+            }
+            break;
     }
 }
 
@@ -100,6 +134,9 @@ void CreateMember()
             break;
         }
     }
+
+
+
     bool memberTypeValid = false;
     string memberType = "";
     while (!memberTypeValid)
@@ -127,7 +164,7 @@ void CreateMember()
     bool QualifyForDiscount()
     {
 
-        DateTime dateStart = new DateTime (2022, 11, 01);
+        DateTime dateStart = new DateTime(2022, 11, 01);
         DateTime dateEnd = new DateTime(2022, 11, 30);
         int discountPercent = 15;
 
@@ -152,28 +189,27 @@ void CreateMember()
             }
         }
         string clubInput = "";
-        Console.WriteLine("Please select a club from the list below");
-
+        Console.WriteLine("Please enter the ID number of desired club from the list below");
+        int clubId = 0;
         foreach (Club club in data.GetClubs())
         {
-            Console.WriteLine(club.Name);
+            Console.WriteLine($" {clubId} - {club.Name}");
+            clubId++;
         }
 
         clubInput = Console.ReadLine().ToLower();
         Club selectedClub = data.GetClubs()[int.Parse(clubInput) - 1];
 
-            SingleMember member = new SingleMember(selectedClub)
-            {
-                Id = maxId + 1,
-                FullName = userName,
-                DateOfBirth = dateOfBirth,
-                JoinDate = DateTime.Now,
-                //Club = clubInput
-            };
+        SingleMember member = new SingleMember(selectedClub)
+        {
+            Id = maxId + 1,
+            FullName = userName,
+            DateOfBirth = dateOfBirth,
+            JoinDate = DateTime.Now,
+            Club = selectedClub
+        };
         data.AddData(member);
-
     }
-
 
     void CreateMultiMember(string userName, DateTime dateOfBirth)
     {
@@ -199,7 +235,7 @@ void CreateMember()
 
 
 
-    Console.WriteLine("complete");
+    Console.WriteLine("All chamnges saved.");
 
 
 }
