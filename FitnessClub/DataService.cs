@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
@@ -12,23 +13,48 @@ namespace FitnessClub
     {
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---
-        private string singleMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
-        private string multiMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
-        private string clubsConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+
+        private string singleMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
+        private string multiMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
+        private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+        private string tempConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\temp.txt";
+        private string checkinConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\checkIn.txt";
+
+
         // ---> **** Change Connection strings to correspond to your local repository **** <---
         private List<SingleMember> SingleMembers { get; set; } = new List<SingleMember>();
         private List<MultiMember> MultiMembers { get; set; } = new List<MultiMember>();
         private List<Members> AllMembers { get; set; } = new List<Members>();   
         private List<Club> Clubs { get; set; } = new List<Club>();
+        private List<CheckIn> CheckIns { get; set; } = new List<CheckIn>();
         private Read Reader { get; set; } = new Read();
         private Write Writer { get; set; } = new Write();
 
         public DataService()
         {
-
+            LoadData();
         }
         // Methods added for querying in memory data
         public List<Club> GetClubs() => Clubs;
+        public List<CheckIn> GetCheckIns() => CheckIns;
+        public List<CheckIn> GetCheckInsByMember(Members member)
+        {
+            return CheckIns
+                .Where(m => m.Member.FullName == member.FullName && m.Member.JoinDate == member.JoinDate)
+                .ToList();
+        }
+        public List<CheckIn> GetCheckInsByClub(Club club)
+        {
+            return CheckIns
+                .Where(c => c.Club.Name == club.Name && c.Club.Address == club.Address)
+                .ToList();
+        }
+        public List<CheckIn> GetCheckInsByDate(DateTime dateTime)
+        {
+            return CheckIns
+                .Where(c => c.DateTime.ToShortDateString() == dateTime.ToShortDateString())
+                .ToList();
+        }
         public Club GetClubByIndex(int index)
         {
             return Clubs[index];
@@ -43,6 +69,10 @@ namespace FitnessClub
         public List<Members> GetAllMembers() => AllMembers;
         public List<SingleMember> GetAllSingleMembers() => SingleMembers;
         public List<MultiMember> GetAllMultiMembers() => MultiMembers;
+        public Members GetMemberById(int id)
+        {
+            return AllMembers.Single(m => m.Id == id);
+        }
         public List<Members> GetMembersByName(string name) => AllMembers
             .Where(m => m.FullName
             .ToLower() == name
@@ -52,7 +82,7 @@ namespace FitnessClub
         public Members GetMemberByNameAndDateOfBirth(string name, DateTime dob)
         {
             Members member = AllMembers
-            .Single(m => m.FullName.ToLower().Trim() == name.ToLower().Trim() );
+            .Single(m => m.FullName.ToLower().Trim() == name.ToLower().Trim() && m.DateOfBirth == dob);
             return member.Type == Types.single ? (SingleMember)member : (MultiMember)member;
         }
         public bool CheckIfMemberAlreadyRegistered(Members member)
@@ -67,16 +97,24 @@ namespace FitnessClub
                 return false;
             }
         }
+        public int GetNextId()
+        {
+            return AllMembers
+                .Select(m => m.Id)
+                .Max() + 1;
+        }
         
         // Algorithm for merging SingleMember() and MultiMember() to one Array for fetch methods etc...
-        private void GetAllMembersForDb()
+        private void LoadAllMembers()
         {
             AllMembers = SingleMembers
                     .Select(s => (Members)s)
                     .Concat(MultiMembers
                     .Select(m => (Members)m))
+                    .OrderBy(m => m.Id)
                     .ToList();
         }
+        
         // Gets proper connection string according to type
         private string GetConnectionString(Types types)
         {
@@ -88,12 +126,14 @@ namespace FitnessClub
                     return multiMemberConnectionString;
                 case Types.club:
                     return clubsConnectionString;
+                case Types.checkin:
+                    return checkinConnectionString;
                 default:
                     return "Contact Customer support immediately! 1-800-WAIT-ON-HOLD-FOR-A-LONG-TIME...";
             }
         }
         // Loads all data from .txt file, this should be the first method called in program.cs after the DataService class is constructed
-        public void LoadData()
+        private void LoadData()
         {
             foreach (Types type in (Types[])Enum.GetValues(typeof(Types)))
             {
@@ -111,6 +151,9 @@ namespace FitnessClub
                     case Types.club:
 
                         ReadData(ToListIWriteable(Clubs), type, connectionString);
+                        break;
+                    case Types.checkin:
+                        ReadData(ToListIWriteable(CheckIns), type, connectionString);
                         break;
                     default:
                         break;
@@ -139,9 +182,12 @@ namespace FitnessClub
                     Clubs.Add((Club)data);
                     WriteData(data, GetConnectionString(data.Type));
                     break;
+                case Types.checkin:
+                    CheckIns.Add((CheckIn)data);
+                    WriteData(data, GetConnectionString(data.Type));
+                    break;
             }
-
-            GetAllMembersForDb();
+            LoadAllMembers();
 
         }
         // Helper method for above AddData() Method, I may simplify this later...
@@ -151,9 +197,25 @@ namespace FitnessClub
             Writer.Writer(data, connectionString);
         }
         // I will write DeleteData() today...
-        public void DeleteData()
+        public void DeleteData(IWriteable data)
         {
-
+            switch (data.Type)
+            {
+                case Types.single:
+                    SingleMembers.Remove((SingleMember)data);
+                    break;
+                case Types.multi:
+                    MultiMembers.Remove((MultiMember)data);
+                    break;
+                case Types.club:
+                    Clubs.Remove((Club)data);
+                    break;
+                case Types.checkin:
+                    CheckIns.Remove((CheckIn)data);
+                    break;
+            }
+            Writer.Eraser(data, GetConnectionString(data.Type), tempConnectionString);
+            LoadAllMembers();
         }
         // ReadData() method works with Load data, recasts the IWriteable into the proper return type SingleMember(), MultiMember() or Club()
         public void ReadData(List<IWriteable> list, Types types, string connectionString)
@@ -169,10 +231,11 @@ namespace FitnessClub
                 case Types.club:
                     Clubs = Reader.ReadData(list, types, connectionString).Select(c => (Club)c).ToList();
                     break;
+                case Types.checkin:
+                    CheckIns = Reader.ReadData(list, types, connectionString).Select(ch => (CheckIn)ch).ToList();
+                    break;
             }
-
-            GetAllMembersForDb();
-
+            LoadAllMembers();
         }
         // ToListIWriteable() method casts list from SingleMember(), MultiMember() or Club() to IWriteable for the read and write methods...
         // Something something polymorphism, something something...
@@ -182,24 +245,24 @@ namespace FitnessClub
         }
         // All Helper methods I didn't need,
         // this is due to using the Types enum and initializing,
-        // the SingleMembers(), MultiMembers() and Club() classes with thier,
+        // the SingleMembers(), MultiMembers(), Club() and CheckIn() classes with thier,
         // own Type enum value, this acts as a pointer to their type for
         // the data service class for casting to and from IWriteable...
-        private bool IsSingleMember(IWriteable data)
-        {
-            return typeof(SingleMember) == data.GetBase();
-        }
-        private bool IsMultiMember(IWriteable data)
-        {
-            return typeof(MultiMember) == data.GetBase();
-        }
-        private bool IsClub(IWriteable data)
-        {
-            return typeof(Club) == data.GetBase();
-        }
-        private bool IsMembers(IWriteable data)
-        {
-            return data.GetBase() == typeof(Members) || data.GetBase() == typeof(SingleMember) || data.GetBase() == typeof(MultiMember);
-        }
+        //private bool IsSingleMember(IWriteable data)
+        //{
+        //    return typeof(SingleMember) == data.GetBase();
+        //}
+        //private bool IsMultiMember(IWriteable data)
+        //{
+        //    return typeof(MultiMember) == data.GetBase();
+        //}
+        //private bool IsClub(IWriteable data)
+        //{
+        //    return typeof(Club) == data.GetBase();
+        //}
+        //private bool IsMembers(IWriteable data)
+        //{
+        //    return data.GetBase() == typeof(Members) || data.GetBase() == typeof(SingleMember) || data.GetBase() == typeof(MultiMember);
+        //}
     }
 }

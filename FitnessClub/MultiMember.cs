@@ -13,11 +13,7 @@ namespace FitnessClub
         {
             
         }
-        public override int GetUniqueId()
-        {
-            return Id = Math.Abs(base.GetUniqueId() / (int)Type + 2);
-        }
-        public override string CheckIn(Club club) => base.CheckIn(club);
+        public override CheckIn CheckIn(Club club) => base.CheckIn(club);
         public override string DataToString()
         {
             return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}";

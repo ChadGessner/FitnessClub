@@ -12,6 +12,6 @@ namespace FitnessClub
     {
         public Types Type { get; set; }
         string DataToString();
-        Type GetBase();
+        
     }
 }
