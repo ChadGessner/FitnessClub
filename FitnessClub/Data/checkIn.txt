@@ -5,3 +5,9 @@ club|Club TooooO|222 TooooO Street|2222|single|7|Felleta|9/22/1999 12:00:00 AM|1
 club|Four of Club|444 Fourth Street|444|multi|9|Chad|12/13/1983 12:00:00 AM|11/21/2022 12:09:17 PM|30|11/21/2022 12:25:11 PM
 club|Club Two|222 Oak Street|300|multi|10|Beavis|6/6/1966 12:00:00 AM|11/21/2022 12:29:11 PM|30|11/21/2022 12:34:14 PM
 club|Club Two|222 Oak Street|300|multi|11|Grant|10/20/2007 12:00:00 AM|11/21/2022 12:35:29 PM|30|11/21/2022 12:39:14 PM
+club|Club Tree|333 Tree Street|333|multi|9|Chad|12/13/1983 12:00:00 AM|11/21/2022 12:09:17 PM|30|11/21/2022 1:17:06 PM
+club|Club One|123 Oak Street|400|single|5|Christina|3/15/2001 12:00:00 AM|11/18/2022 4:02:57 PM|club|Club One|123 Oak Street|400|11/21/2022 1:33:12 PM
+club|Club Two|222 Oak Street|300|multi|11|Grant|10/20/2007 12:00:00 AM|11/21/2022 12:35:29 PM|30|11/21/2022 3:19:53 PM
+club|Club One|123 Oak Street|400|single|8|Chad|12/13/1983 12:00:00 AM|11/21/2022 8:42:24 AM|club|Club One|123 Oak Street|400|11/21/2022 3:20:19 PM
+club|Club One|123 Oak Street|400|single|8|Chad|12/13/1983 12:00:00 AM|11/21/2022 8:42:24 AM|club|Club One|123 Oak Street|400|11/21/2022 5:23:01 PM
+club|Club Two|222 Oak Street|300|multi|10|Beavis|6/6/1966 12:00:00 AM|11/21/2022 12:29:11 PM|30|11/21/2022 5:33:04 PM

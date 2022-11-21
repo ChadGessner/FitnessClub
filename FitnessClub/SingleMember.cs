@@ -18,7 +18,7 @@ namespace FitnessClub
         // see parent for notes...
         public override CheckIn CheckIn(Club club)
         {
-            if(club == Club)
+            if(club.Name == Club.Name)
             {
                 return new CheckIn(Club, this, DateTime.Now);
             }

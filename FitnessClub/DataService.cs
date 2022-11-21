@@ -13,14 +13,11 @@ namespace FitnessClub
     {
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---
-
         private string singleMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
         private string multiMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
         private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
         private string tempConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\temp.txt";
         private string checkinConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\checkIn.txt";
-
-
         // ---> **** Change Connection strings to correspond to your local repository **** <---
         private List<SingleMember> SingleMembers { get; set; } = new List<SingleMember>();
         private List<MultiMember> MultiMembers { get; set; } = new List<MultiMember>();
@@ -68,15 +65,16 @@ namespace FitnessClub
         public List<Members> GetAllMembers() => AllMembers;
         public List<SingleMember> GetAllSingleMembers() => SingleMembers;
         public List<MultiMember> GetAllMultiMembers() => MultiMembers;
-        public Members GetMemberById(int id)
-        {
-            return AllMembers.Single(m => m.Id == id);
-        }
+        public Members GetMemberById(int id) => AllMembers
+            .Single(m => m.Id == id);
         public List<Members> GetMembersByName(string name) => AllMembers
             .Where(m => m.FullName
             .ToLower() == name
             .ToLower()
             .Trim())
+            .ToList();
+        public List<SingleMember> GetSingleMembersByClub(Club club) => SingleMembers
+            .Where(m => m.Club.Name == club.Name)
             .ToList();
         public Members GetMemberByNameAndDateOfBirth(string name, DateTime dob)
         {
@@ -96,13 +94,9 @@ namespace FitnessClub
                 return false;
             }
         }
-        public int GetNextId()
-        {
-            return AllMembers
+        public int GetNextId() => AllMembers
                 .Select(m => m.Id)
                 .Max() + 1;
-        }
-        
         // Algorithm for merging SingleMember() and MultiMember() to one Array for fetch methods etc...
         private void LoadAllMembers()
         {
@@ -113,7 +107,6 @@ namespace FitnessClub
                     .OrderBy(m => m.Id)
                     .ToList();
         }
-
         // Gets proper connection string according to type
         private string GetConnectionString(Types types)
         {
@@ -140,12 +133,11 @@ namespace FitnessClub
                 switch (type)
                 {
                     case Types.single:
-
                         ReadData(ToListIWriteable(SingleMembers), type, connectionString);
                         break;
                     case Types.multi:
-
                         ReadData(ToListIWriteable(MultiMembers), type, connectionString);
+                        LoadAllMembers();
                         break;
                     case Types.club:
 
@@ -157,8 +149,6 @@ namespace FitnessClub
                     default:
                         break;
                 }
-                AllMembers = SingleMembers.Select(s => (Members)s).Concat(MultiMembers.Select(m => (Members)m)).ToList();
-
             }
         }
         // Method for adding data, first loads it in local memory, the lists at the top,
@@ -187,15 +177,12 @@ namespace FitnessClub
                     break;
             }
             LoadAllMembers();
-
         }
         // Helper method for above AddData() Method, I may simplify this later...
         private void WriteData(IWriteable data, string connectionString)
         {
-
             Writer.Writer(data, connectionString);
         }
-        // I will write DeleteData() today...
         public void DeleteData(IWriteable data)
         {
             switch (data.Type)
