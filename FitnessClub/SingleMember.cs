@@ -13,7 +13,11 @@ namespace FitnessClub
         public Club Club { get; set; }
         public override CheckIn CheckIn(Club club)
         {
-            return new CheckIn(Club,this, DateTime.Now);
+            if (club == Club)
+            {
+                return new CheckIn(Club, this, DateTime.Now);
+            }
+            throw new Exception("You dont belong to this club");
         }
         public SingleMember(Club club)
         {
