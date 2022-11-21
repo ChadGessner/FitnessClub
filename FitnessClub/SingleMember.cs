@@ -11,20 +11,26 @@ namespace FitnessClub
     {
         public override Types Type { get; set; } = (Types)0;
         public Club Club { get; set; }
-        public override CheckIn CheckIn(Club club)
-        {
-            if (club == Club)
-            {
-                return new CheckIn(Club, this, DateTime.Now);
-            }
-            throw new Exception("You dont belong to this club");
-        }
         public SingleMember(Club club)
         {
             Club = club;
         }
         // see parent for notes...
-        
+        public override CheckIn CheckIn(Club club)
+        {
+            if(club == Club)
+            {
+                return new CheckIn(Club, this, DateTime.Now);
+            }
+            else
+            {
+                throw new Exception("Membership type is not for this club...\n" +
+                    " If you would like to upgrade your membership to\n" +
+                    " MultiClubMember we should probably write a method for that in program.cs");
+            }
+            
+        }
+
         public override string DataToString()
         {
             return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}|{Club.DataToString()}";
