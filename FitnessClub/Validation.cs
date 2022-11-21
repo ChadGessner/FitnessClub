@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +17,20 @@ namespace FitnessClub
                 dateInput = DateTime.Parse(userInput);
                 return true;
             }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
+        public static bool IsInt(string userInput)
+        {
+            int intInput;
+            try
+            {
+                intInput = int.Parse(userInput);
+                return true;
+            }        
             catch (FormatException)
             {
                 return false;
