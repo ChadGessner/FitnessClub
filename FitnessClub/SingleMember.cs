@@ -22,14 +22,9 @@ namespace FitnessClub
             {
                 return new CheckIn(Club, this, DateTime.Now);
             }
-            else
-            {
-                throw new Exception("Membership type is not for this club...\n" +
-                    " If you would like to upgrade your membership to\n" +
-                    " MultiClubMember we should probably write a method for that in program.cs");
-            }
-            
+            throw new Exception("You don't belong to this club bruh...");
         }
+       
 
         public override string DataToString()
         {
