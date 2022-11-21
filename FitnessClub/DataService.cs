@@ -29,7 +29,6 @@ namespace FitnessClub
         private List<CheckIn> CheckIns { get; set; } = new List<CheckIn>();
         private Read Reader { get; set; } = new Read();
         private Write Writer { get; set; } = new Write();
-
         public DataService()
         {
             LoadData();
@@ -114,7 +113,7 @@ namespace FitnessClub
                     .OrderBy(m => m.Id)
                     .ToList();
         }
-        
+
         // Gets proper connection string according to type
         private string GetConnectionString(Types types)
         {

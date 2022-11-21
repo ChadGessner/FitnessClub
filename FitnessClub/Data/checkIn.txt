@@ -2,21 +2,6 @@
 club|Club One|123 Oak Street|400|single|3|Chad|12/13/1983 12:00:00 AM|11/18/2022 3:36:51 PM|club|Club One|123 Oak Street|400|11/19/2022 9:11:30 AM
 club|Club One|123 Oak Street|400|single|5|Christina|3/15/2001 12:00:00 AM|11/18/2022 4:02:57 PM|club|Club One|123 Oak Street|400|11/19/2022 9:11:30 AM
 club|Club TooooO|222 TooooO Street|2222|single|7|Felleta|9/22/1999 12:00:00 AM|11/18/2022 5:22:34 PM|club|Club TooooO|222 TooooO Street|2222|11/19/2022 9:11:30 AM
-club|Club TooooO|222 TooooO Street|2222|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/19/2022 10:43:03 AM
-club|Club TooooO|222 TooooO Street|2222|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/19/2022 10:43:03 AM
-club|Club TooooO|222 TooooO Street|2222|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/19/2022 10:43:57 AM
-club|Club TooooO|222 TooooO Street|2222|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/19/2022 10:43:57 AM
-club|Four of Club|444 Fourth Street|444|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/19/2022 12:12:03 PM
-club|Four of Club|444 Fourth Street|444|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/19/2022 1:45:05 PM
-club|Four of Club|444 Fourth Street|444|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/20/2022 1:05:59 PM
-club|Four of Club|444 Fourth Street|444|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/20/2022 1:05:59 PM
-club|Four of Club|444 Fourth Street|444|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/20/2022 1:06:27 PM
-club|Four of Club|444 Fourth Street|444|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/20/2022 1:06:27 PM
-club|Four of Club|444 Fourth Street|444|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/20/2022 1:16:12 PM
-club|Four of Club|444 Fourth Street|444|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/20/2022 1:16:12 PM
-club|Four of Club|444 Fourth Street|444|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/20/2022 1:16:46 PM
-club|Four of Club|444 Fourth Street|444|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/20/2022 1:16:46 PM
-club|Four of Club|444 Fourth Street|444|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/20/2022 1:18:54 PM
-club|Four of Club|444 Fourth Street|444|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/20/2022 1:18:54 PM
-club|Four of Club|444 Fourth Street|444|multi|4|Dan|6/27/1989 12:00:00 AM|11/18/2022 3:37:41 PM|11/20/2022 1:20:00 PM
-club|Four of Club|444 Fourth Street|444|multi|6|Ryan|7/21/1990 12:00:00 AM|11/18/2022 4:25:14 PM|11/20/2022 1:20:00 PM
+club|Four of Club|444 Fourth Street|444|multi|9|Chad|12/13/1983 12:00:00 AM|11/21/2022 12:09:17 PM|30|11/21/2022 12:25:11 PM
+club|Club Two|222 Oak Street|300|multi|10|Beavis|6/6/1966 12:00:00 AM|11/21/2022 12:29:11 PM|30|11/21/2022 12:34:14 PM
+club|Club Two|222 Oak Street|300|multi|11|Grant|10/20/2007 12:00:00 AM|11/21/2022 12:35:29 PM|30|11/21/2022 12:39:14 PM
