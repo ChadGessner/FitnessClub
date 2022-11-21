@@ -2,6 +2,8 @@
 
 
 using FitnessClub;
+using System.Dynamic;
+using System.Net.Http.Headers;
 // ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
 DataService data = new DataService();
 
@@ -45,6 +47,7 @@ void showMenu()
     Console.WriteLine("4 - Delete an existing member");
     Console.WriteLine("5 - Exit application");
 
+
     string userChoice = Console.ReadLine().ToLower();
     switch (userChoice)
     {
@@ -54,12 +57,12 @@ void showMenu()
             Members member = data.GetMemberById(int.Parse(Console.ReadLine()));
             Console.WriteLine("Which club will they be checking in to?");
             int count = 1;
-            foreach(Club club in data.GetClubs())
+            foreach (Club club in data.GetClubs())
             {
                 Console.WriteLine($"{count}) {club.Name} {club.Address} {club.BaseFee}");
                 count++;
             }
-            Club clubToCheckin = data.GetClubByIndex(int.Parse(Console.ReadLine()));
+            Club clubToCheckin = data.GetClubByIndex(int.Parse(Console.ReadLine()) - 1);
             try
             {
                 member.CheckIn(clubToCheckin);
@@ -68,7 +71,7 @@ void showMenu()
             {
                 Console.WriteLine("Upsell logic here...");
             }
-            
+
             break;
         case "2":
             CreateMember();
@@ -83,10 +86,8 @@ void showMenu()
             Environment.Exit(0);
             break;
     }
+
 }
-
-
-
 void ChangesSavedMessage()
 {
     Console.WriteLine("All changes saved.");
@@ -273,4 +274,13 @@ void CreateMember()
         data.AddData(member);
         ChangesSavedMessage();
     }
+
+
+
+
+
+
+
+
 }
+
