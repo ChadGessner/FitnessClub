@@ -48,44 +48,19 @@ void showMenu()
     Console.WriteLine("5 - Exit application");
 
 
-    string userChoice = Console.ReadLine().ToLower();
-    switch (userChoice)
-    {
-        case "1":
-            ViewMemberList();
-            Console.WriteLine("Which member would you like to check in?");
-            Members member = data.GetMemberById(int.Parse(Console.ReadLine()));
-            Console.WriteLine("Which club will they be checking in to?");
-            int count = 1;
-            foreach (Club club in data.GetClubs())
-            {
-                Console.WriteLine($"{count}) {club.Name} {club.Address} {club.BaseFee}");
-                count++;
-            }
-            Club clubToCheckin = data.GetClubByIndex(int.Parse(Console.ReadLine()) - 1);
-            try
-            {
-                member.CheckIn(clubToCheckin);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Upsell logic here...");
-            }
-
-            break;
-        case "2":
-            CreateMember();
-            break;
-        case "3":
-            ViewMemberListAndMenu();
-            break;
-        case "4":
-            DeleteMember();
-            break;
-        case "5":
-            Environment.Exit(0);
-            break;
-    }
+Console.WriteLine("Enter 'check' to check into a gym, enter 'new' to create a new user or enter 'view' to see a list of all members.");
+string userChoice = Console.ReadLine().ToLower();
+switch (userChoice)
+{
+    case "check":
+    //call check-in method here
+    case "new":
+        CreateMember();
+        break;
+    case "view":
+        ViewMemberList();
+        break;
+}
 
 }
 void ChangesSavedMessage()
@@ -106,6 +81,32 @@ void ViewMemberList()
 
     {
         Console.WriteLine($"{member.Id,-5} {member.FullName,-15} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-10}");
+    }
+}
+
+void DeleteMember()
+{
+    Console.Write("Enter the ID for the member to delete, type 'view' to display a list of all members:");
+    string userInput = Console.ReadLine().ToLower();
+    switch (userInput)
+    {
+        case "view":
+            ViewMemberList();
+            Console.Write("Enter the ID for the member to delete:");
+            break;
+        default:
+            //will need validation to check if INT has been entered.
+            Console.WriteLine("Are you sure you wish to delete this member? (y/n)");
+            string userConfirm = Console.ReadLine().ToLower();
+            if (userConfirm == "y")
+            {
+                // will need to remove member from List, clear txt file and re-write List here
+            }
+            else
+            {
+                break;
+            }
+            break;
     }
 }
 
@@ -176,6 +177,9 @@ void CreateMember()
             break;
         }
     }
+
+
+
     bool memberTypeValid = false;
     string memberType = "";
     while (!memberTypeValid)
