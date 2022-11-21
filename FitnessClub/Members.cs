@@ -15,17 +15,26 @@ namespace FitnessClub
         public virtual Types Type { get; set; }
         public Members()
         {
-
+            
         }
-        public virtual string CheckIn(Club club)
+        
+        
+        // CheckIn() can be changed for implementing Membership Points logic
+        public virtual CheckIn CheckIn(Club club)
         {
-            DateTime dateTime = DateTime.Now;
-            return $"{DataToString()}|{club.DataToString()}|{dateTime}";
+            return new CheckIn(club,this, DateTime.Now);
         }
+        // **** DataToString() method can be changed for saving points logic generated,
+        // by check in method... 
+        // But this will break the DataService() class,
+        // So changes will need to be implemented in that class ****
         public virtual string DataToString()
         {
             return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}";
         }
+        // GetBase() method Added for dealing with IWriteable,
+        // casting and recasting,
+        // I don't think we need it anymore...
         public virtual Type GetBase()
         {
             return typeof(Members);

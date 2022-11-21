@@ -1,90 +1,160 @@
-﻿/*
- Allow users to:
-Add members (both kinds), remove members or display member information.
-Check a particular member in at a particular club. (Call the CheckIn method). Display a friendly error message if there is an exception. Don’t let it crash the program.
-Select a member and generate a bill of fees. Include membership points for Multi-Club Members.
-A main class which takes input from the user:
-Asks a user if they want to select a club
-Added members should be given the option to select from at least 4 fitness center locations or have the option to be a multi-club member.
-Optional enhancements:
-(Easy/Medium) Allow new members to receive discounts if they sign up during certain time periods, explore the DateTime library for help with date and time.
-(Medium) Store clubs and members in text files.
-(Hard) Out Pizza the hut 
- 
+
+
+
 using FitnessClub;
+using System.Dynamic;
+using System.Net.Http.Headers;
+// ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
+DataService data = new DataService();
 
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Data.Common;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
+// ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
+// data.LoadData() is now private and located in the DataService constructor so it never needs to be called again <--- Loads all data from Db
+/*
+    *** Data Query Methods ***
+    data.GetClubs() <-- Returns list of all clubs
+    data.GetCheckIns() <-- Returns List of all CheckIn objects
+    data.GetCheckInsByMember(Members member) <-- Returns all CheckIn objects associate with that member, casts accordingly
+    data.GetCheckInsByClub(Club club) <-- Returns all CheckIn objects associated with that club
+    data.GetCheckinsByDate(DateTime dateTime) <-- Returns all CheckIn objects according to the Date, technically works but wont be very usefull yet
+    data.GetClubByIndex(int index) <-- Returns single club within data.Clubs with that index
+    data.GetClubByName(string name) <-- Returns single Club object from Clubs or an empty Club instance, will need to be validated or it will break the application
+    data.GetAllMembers()  <-- Returns list of all Members
+    data.GetAllSingleMembers() <-- Returns list of all SingleMembers
+    data.GetAllMultiMembers() <-- Returns list of all MultiMembers
+    data.GetMemberById(int id) <--  Returns the Member from AllMembers with corresponding Id value, will throw exception if Member with that id does not exist, needs a validation
+    data.GetMembersByName(string name) <-- Returns ***List of Members*** with matching name
+    data.GetMemberByNameAndDateOfBirth(string name, DateTime dob) <-- Returns member from AllMembers and casts it appropriately, throws exception if member does not exist
+    data.CheckIfMemberAlreadyRegistered(Members member) <-- Returns true if the Member exists else false
+    data.GetNextId() <-- Returns Max Id + 1
+     
+    
+    
+    *** Methods for database operation ***
+    --> All these methods take an instance of any class that implements IWriteable <--
+    --> This includes Club(), Members(), SingleMember(), MultiMember() and CheckIn() <--
+    data.AddData(IWriteable data) <-- adds object to in memory datalists, then overwrites .txt with the appended list
+    data.DeleteData(IWriteable data) <-- deletes object from memory, then overwrietes .txt file with the altered list
+ */
+//foreach (MultiMember multi in data.GetAllMultiMembers())
+//{
+//    data.AddData(multi.CheckIn(data.GetClubByIndex(3)));
+//}
+//DateTime date = DateTime.Now;
+//Console.WriteLine(data.GetCheckIns().Count);
+//Console.WriteLine(date.ToShortDateString());
+//Console.WriteLine(data.GetCheckInsByMember(data.GetMemberById(6))[0].DateTime.ToShortDateString());
 
 
+Console.WriteLine("Welcome to the Pizza Hut Gym Member Management System!");
+showMenu();
+
+
+void showMenu()
 {
-    Console.WriteLine(member.FullName);
+    Console.WriteLine("Choose from the following options:");
+    Console.WriteLine("1 - Check an existing member into a club");
+    Console.WriteLine("2 - Create a new member");
+    Console.WriteLine("3 - View details of all members");
+    Console.WriteLine("4 - Delete an existing member");
+    Console.WriteLine("5 - Exit application");
+
+    string userChoice = Console.ReadLine().ToLower();
+    switch (userChoice)
+    {
+        case "1":
+        //call check-in method here
+        case "2":
+            CreateMember();
+            break;
+        case "3":
+            ViewMemberListAndMenu();
+            break;
+        case "4":
+            DeleteMember();
+            break;
+        case "5":
+            Environment.Exit(0);
+            break;
+    }
 }
-foreach (var club in data.Clubs)
+
+
+
+void ChangesSavedMessage()
 {
-    Console.WriteLine(club.Name);
+    Console.WriteLine("All changes saved.");
 }
-foreach(var member in data.SingleMembers)
+
+void ViewMemberListAndMenu()
 {
-    Console.WriteLine(member.FullName);
+    ViewMemberList();
+    showMenu();
 }
-foreach(var member in data.MultiMembers)
-{
-    Console.WriteLine(member.FullName);
-}
-Console.WriteLine(data.Clubs.Count + " " + data.AllMembers.Count + " " + data.MultiMembers.Count + " " + data.SingleMembers.Count);
-Club clubFive = new Club("Club Five", "12345 Oak Street", 420);
-SingleMember dan = new(clubFive)
-{
-    FullName = "Dan",
-    DateOfBirth = DateTime.Now,
-    JoinDate = DateTime.Now,
-};
-data.AddData(clubFive);
-Console.WriteLine(data.Clubs.Count);
-
-
-
-
-
-
-
-
-=======
-string clubOne1 = "Club One|123 Oak Street|400";
-string clubTwo2 = "Club Two|133 Oak Street|500";
-*/
-
-
-
-Console.WriteLine("Welcome to Pizza Hut Gym!");
-//check if user is already registered here, if not call CreateMember method below
-
-//CreateMember();
-ViewMemberList();
-
 void ViewMemberList()
 {
-    Console.WriteLine(data.Members.Count());
-    foreach (var member in data.Members)
+    Console.WriteLine($"{"ID",-5} {"Name",-15} {"Date of Birth",-15} {"Join Date",-15} {"Member Type",-11}");
+    Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"--------------",-15} {"-----------",-11}");
+    foreach (var member in data.GetAllMembers())
+
     {
-        Console.WriteLine();
+        Console.WriteLine($"{member.Id,-5} {member.FullName,-15} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-10}");
+    }
+}
+
+void DeleteMember()
+{
+    Console.Write("Enter the ID for the member to delete, type 'view' to display a list of all members or enter 'menu' to return to the main menu:");
+    string userInput = Console.ReadLine().ToLower();
+    switch (userInput)
+    {
+        case "menu":
+            showMenu();
+            break;
+        case "view":
+            ViewMemberList();
+            DeleteMember();
+            break;
+        default:
+            bool isInt = Validation.IsInt(userInput);
+            if (isInt)
+            {
+                Console.WriteLine("Are you sure you wish to delete this member? (y/n)");
+                string userConfirm = Console.ReadLine().ToLower();
+                if (userConfirm == "y")
+                {
+                    Members userToDelete = data.GetMemberById(int.Parse(userInput));
+
+                    data.DeleteData(userToDelete);
+                    ChangesSavedMessage();
+                    showMenu();
+                }
+                else
+                {
+                    break;
+                }
+                break;
+            }
+            else
+            {
+                Console.WriteLine("That is not a valid userID. Please try again");
+                DeleteMember();
+                break;
+            }
     }
 }
 
 void CreateMember()
 {
-    Console.Write("Please enter your name:");
+    Console.Write("New member name:");
     string userName = Console.ReadLine();
     bool isValidDate = false;
     DateTime dateOfBirth = default(DateTime);
+
+    QualifyForDiscount();
+
     while (!isValidDate)
     {
-        Console.WriteLine("Please enter your date of birth (mm/dd/yyyy):");
+        Console.WriteLine("New member Date of Birth (mm/dd/yyyy):");
         string dateInput = Console.ReadLine();
         if (!Validation.IsDate(dateInput))
         {
@@ -102,28 +172,49 @@ void CreateMember()
     string memberType = "";
     while (!memberTypeValid)
     {
-        Console.Write($"Which membership option would you prefer? Enter 'single' for access to one club or 'multi' for access to all clubs.");
+        Console.Write($"Enter membership type (single/multi):");
         memberType = Console.ReadLine().ToLower();
         switch (memberType)
         {
             case "single":
                 memberTypeValid = true;
                 CreateSingleMember(userName, dateOfBirth);
+                showMenu();
                 break;
             case "multi":
                 memberTypeValid = true;
                 CreateMultiMember(userName, dateOfBirth);
+                showMenu();
                 break;
             default:
                 memberTypeValid = false;
                 Console.WriteLine("That is not a valid input, please try again.");
                 break;
         }
+
     }
+
+    bool QualifyForDiscount()
+    {
+
+        DateTime dateStart = new DateTime(2022, 11, 01);
+        DateTime dateEnd = new DateTime(2022, 11, 30);
+        int discountPercent = 15;
+
+        if (DateTime.Now >= dateStart && DateTime.Now <= dateEnd)
+        {
+            Console.WriteLine($"This new member qualifies for a discount of {discountPercent}%");
+            return true;
+        }
+        else return false;
+    }
+
     void CreateSingleMember(string userName, DateTime dateOfBirth)
     {
         int maxId = 0;
-        foreach (var memberEntry in data.Members)
+
+        foreach (var memberEntry in data.GetAllMembers())
+
         {
             if (memberEntry.Id > maxId)
             {
@@ -131,31 +222,34 @@ void CreateMember()
             }
         }
         string clubInput = "";
-        Console.WriteLine("Please select a club from the list below");
-        foreach (var club in data.Clubs)
+        Console.WriteLine("Enter the ID number of desired club from the list below");
+        int clubId = 0;
+        foreach (Club club in data.GetClubs())
         {
-            Console.WriteLine(club.Name);
+            Console.WriteLine($" {clubId +1} - {club.Name}");
+            clubId++;
         }
+
         clubInput = Console.ReadLine().ToLower();
+        Club selectedClub = data.GetClubs()[int.Parse(clubInput) - 1];
 
-        //Still to do
-        //SingleMember member = new SingleMember()
-        //{
-        //    Id = maxId + 1,
-        //    FullName = userName,
-        //    DateOfBirth = dateOfBirth,
-        //    JoinDate = DateTime.Now,
-        //    Club =
-        //};
-        //data.AddMember(member);
+        SingleMember member = new SingleMember(selectedClub)
+        {
+            Id = maxId + 1,
+            FullName = userName,
+            DateOfBirth = dateOfBirth,
+            JoinDate = DateTime.Now,
+            Club = selectedClub
+        };
+        data.AddData(member);
+        ChangesSavedMessage();
     }
-
-
 
     void CreateMultiMember(string userName, DateTime dateOfBirth)
     {
-        int maxId = 0;
-        foreach (var memberEntry in data.Members)
+        int maxId = data.GetNextId();
+        foreach (var memberEntry in data.GetAllMembers())
+
         {
             if (memberEntry.Id > maxId)
             {
@@ -164,18 +258,21 @@ void CreateMember()
         }
         MultiMember member = new MultiMember()
         {
-            Id = maxId + 1,
+            Id = maxId,
             FullName = userName,
             DateOfBirth = dateOfBirth,
             JoinDate = DateTime.Now,
         };
-        data.AddMember(member);
+        data.AddData(member);
+        ChangesSavedMessage();
     }
-  
 
-    
 
-    Console.WriteLine("complete");
+
+
+
+
+
 
 }
-*/
+
