@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,16 +9,30 @@ namespace FitnessClub
 {
     public class SingleMember : Members
     {
-
-        public override int ID { get; set; }
-        public override string FullName { get; set; }
-        public override int DateOfBirth { get; set; } //date time
-        public override int JoinDate { get; set; }
+        public override Types Type { get; set; } = (Types)0;
         public Club Club { get; set; }
-
-        public override void CheckIn(Club club)
+        public SingleMember(Club club)
         {
-            //throw exception if its not their club
+            Club = club;
+        }
+        // see parent for notes...
+        public override CheckIn CheckIn(Club club)
+        {
+            if(club.Name == Club.Name)
+            {
+                return new CheckIn(Club, this, DateTime.Now);
+            }
+            throw new Exception("You don't belong to this club bruh...");
+        }
+       
+
+        public override string DataToString()
+        {
+            return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}|{Club.DataToString()}";
+        }
+        public override Type GetBase()
+        {
+            return typeof(SingleMember);
         }
     }
 }
