@@ -89,31 +89,6 @@ void DisplayClubMembers(Club club)
         Console.WriteLine($"Id: {singleMember.Id} Name: {singleMember.FullName} Join Date: {singleMember.JoinDate}");
     }
 }
-void CheckInMember()
-{
-    
-    while (true)
-    {
-        Console.Write("Enter the ID for the member to check-in, type 'view' to display a list of all members or enter 'menu' to return to the main menu:");
-        string userInput = Console.ReadLine().ToLower();
-        switch (userInput)
-        {
-            case "menu":
-                showMenu();
-                break;
-            case "view":
-                ViewMemberList();
-                CheckInMember();
-                break;
-            default:
-                bool isClubInt = Validation.IsInt(userInput);
-                if (!isClubInt)
-                {
-                    break;
-                }
-                if (isClubInt)
-                {
-
 
 void CheckInMember()
 {
@@ -189,16 +164,6 @@ void listClubs()
         clubIndex++;
     }
 
-}
-
-void listClubs()
-{
-    int clubIndex = 1;
-    foreach (Club club in data.GetClubs())
-    {
-        Console.WriteLine($"{clubIndex} - {club.Name}");
-        clubIndex++;
-    }
 }
 
 
