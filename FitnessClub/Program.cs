@@ -107,7 +107,7 @@ void CheckInMember()
             bool isClubInt = Validation.IsInt(userInput);
             if (isClubInt)
             {
-                Console.WriteLine("Enter the club ID number to check in to");
+                Console.WriteLine("Enter the club ID number to check in to:");
                 listClubs();
                 string clubInput = Console.ReadLine();
                 bool isMemberInt = Validation.IsInt(userInput);
@@ -123,7 +123,7 @@ void CheckInMember()
                     catch
                     {
                         //DisplayClubMembers(club); <--not sure this added anything to this process
-                        Console.WriteLine("You do not appear to be a memnber of this club. Would you like to upgrade your membership to allow access to multiple clubs? (y/n)");
+                        Console.WriteLine("You do not appear to be a member of this club. Would you like to upgrade your membership to allow access to multiple clubs? (y/n)");
                         string userChoice = Console.ReadLine().ToLower();
                         switch (userChoice)
                         {
@@ -145,7 +145,6 @@ void CheckInMember()
                                 break;
                         }
                     }
-
                 }
                 else
                 {
@@ -302,7 +301,6 @@ void CreateMember()
 }
 bool QualifyForDiscount()
 {
-
     DateTime dateStart = new DateTime(2022, 11, 01);
     DateTime dateEnd = new DateTime(2022, 11, 30);
     int discountPercent = 15;
@@ -325,12 +323,8 @@ void CreateSingleMember(int userId, string userName, DateTime dateOfBirth)
         Console.WriteLine($" {clubId + 1} - {club.Name}");
         clubId++;
     }
-
-
     clubInput = Console.ReadLine().ToLower();
     Club selectedClub = data.GetClubs()[int.Parse(clubInput) - 1];
-
-
     SingleMember member = new SingleMember(selectedClub)
     {
         Id = userId,
