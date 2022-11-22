@@ -11,16 +11,21 @@ namespace FitnessClub
     {
         public override Types Type { get; set; } = (Types)0;
         public Club Club { get; set; }
-        public override CheckIn CheckIn(Club club)
-        {
-            return new CheckIn(Club,this, DateTime.Now);
-        }
         public SingleMember(Club club)
         {
             Club = club;
         }
         // see parent for notes...
-        
+        public override CheckIn CheckIn(Club club)
+        {
+            if(club.Name == Club.Name)
+            {
+                return new CheckIn(Club, this, DateTime.Now);
+            }
+            throw new Exception("You don't belong to this club bruh...");
+        }
+       
+
         public override string DataToString()
         {
             return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}|{Club.DataToString()}";
