@@ -13,11 +13,15 @@ namespace FitnessClub
     {
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---
-        private string singleMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
-        private string multiMemberConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
-        private string clubsConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
-        private string tempConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\temp.txt";
-        private string checkinConnectionString = @"C:\Users\Chad\Source\Repos\FitnessClub\FitnessClub\Data\checkIn.txt";
+
+        private string singleMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
+        private string multiMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
+        private string clubsConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+        private string tempConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\temp.txt";
+        private string checkinConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\checkIn.txt";
+
+
+
         // ---> **** Change Connection strings to correspond to your local repository **** <---
         private List<SingleMember> SingleMembers { get; set; } = new List<SingleMember>();
         private List<MultiMember> MultiMembers { get; set; } = new List<MultiMember>();
