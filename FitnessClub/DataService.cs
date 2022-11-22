@@ -14,6 +14,12 @@ namespace FitnessClub
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---
 
+        //private string singleMemberConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataSingleMember.txt";
+        //private string multiMemberConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataMultiMembers.txt";
+        //private string clubsConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataClubs.txt";
+        //private string tempConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/temp.txt";
+        //private string checkinConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/checkIn.txt";
+
         private string singleMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
         private string multiMemberConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
         private string clubsConnectionString = @"C:\Users\danin\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";

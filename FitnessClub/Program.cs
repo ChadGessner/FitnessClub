@@ -84,7 +84,7 @@ void showMenu()
 }
 void DisplayClubMembers(Club club)
 {
-    foreach(SingleMember singleMember in data.GetSingleMembersByClub(club))
+    foreach (SingleMember singleMember in data.GetSingleMembersByClub(club))
     {
         Console.WriteLine($"Id: {singleMember.Id} Name: {singleMember.FullName} Join Date: {singleMember.JoinDate}");
     }
@@ -107,40 +107,51 @@ void CheckInMember()
             bool isClubInt = Validation.IsInt(userInput);
             if (isClubInt)
             {
-                Console.Write("Enter the club ID number to check in to or type 'view' to display a list of clubs:");
+                Console.WriteLine("Enter the club ID number to check in to");
+                listClubs();
                 string clubInput = Console.ReadLine();
-                if (clubInput.ToLower() == "view")
+                bool isMemberInt = Validation.IsInt(userInput);
+                if (isMemberInt)
                 {
-                    listClubs();
-                    CheckInMember();
+                    Members member = data.GetMemberById(int.Parse(userInput));
+
+                    Club club = data.GetClubByIndex(int.Parse(clubInput) - 1);
+                    try
+                    {
+                        data.AddData(member.CheckIn(club));
+                    }
+                    catch
+                    {
+                        //DisplayClubMembers(club); <--not sure this added anything to this process
+                        Console.WriteLine("You do not appear to be a memnber of this club. Would you like to upgrade your membership to allow access to multiple clubs? (y/n)");
+                        string userChoice = Console.ReadLine().ToLower();
+                        switch (userChoice)
+                        {
+                            case "y":
+                                Members userToChange = data.GetMemberById(int.Parse(userInput));
+                                int userId = userToChange.Id;
+                                string userName = userToChange.FullName;
+                                DateTime dateOfBirth = userToChange.DateOfBirth;
+                                DateTime joinDate = userToChange.JoinDate;
+                                data.DeleteData(userToChange);
+                                CreateMultiMember(userId, userName, dateOfBirth, joinDate);
+                                Console.WriteLine("Member status changed to multi-club");
+                                Console.WriteLine("Check-in successful");
+                                showMenu();
+                                break;
+                            default:
+                                Console.WriteLine("Check-in unsuccessful");
+                                showMenu();
+                                break;
+                        }
+                    }
+
                 }
                 else
                 {
-
-                    bool isMemberInt = Validation.IsInt(userInput);
-                    if (isMemberInt)
-                    {
-                        Members member = data.GetMemberById(int.Parse(userInput));
-
-                        Club club = data.GetClubByIndex(int.Parse(clubInput) - 1);
-                        try
-                        {
-                            data.AddData(member.CheckIn(club));
-                        }
-                        catch
-                        {
-                            DisplayClubMembers(club);
-                            Console.WriteLine("Up sell method here");
-                        }
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("That is not a valid club ID. Please try again");
-                        CheckInMember();
-                        break;
-                    }
-
+                    Console.WriteLine("That is not a valid club ID. Please try again");
+                    CheckInMember();
+                    break;
                 }
                 ChangesSavedMessage();
                 showMenu();
@@ -175,15 +186,26 @@ void ChangesSavedMessage()
 
 void ViewMemberList()
 {
-    Console.WriteLine($"{"ID",-5} {"Name",-15} {"Date of Birth",-15} {"Join Date",-15} {"Member Type",-11}");
-    Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"--------------",-15} {"-----------",-11}");
-    foreach (var member in data.GetAllMembers())
+    string clubName = "";
+    string clubID = "";
+    int nameLength = 0;
 
+    Console.WriteLine($"{"ID",-5} {"Name",-20} {"Date of Birth",-15} {"Join Date",-15} {"Member Type",-11} {"Assigned Club",-15}");
+    Console.WriteLine($"{"-----",-5} {"--------------------",-20} {"--------------",-15} {"--------------",-15} {"-----------",-11} {"--------------",-15}");
+    foreach (var member in data.GetAllMembers())
     {
-        Console.WriteLine($"{member.Id,-5} {member.FullName,-15} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-10}");
+        if (member.Type == Types.single)
+        {
+            SingleMember singlemember = (SingleMember)data.GetMemberById(member.Id);
+            clubName = singlemember.Club.Name;
+        }
+        else
+        {
+            clubName = "";
+        }
+        Console.WriteLine($"{member.Id,-5} {member.FullName,-20} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-11} {clubName}");
     }
 }
-
 void DeleteMember()
 {
     Console.Write("Enter the ID for the member to delete, type 'view' to display a list of all members or enter 'menu' to return to the main menu:");
@@ -232,7 +254,7 @@ void CreateMember()
     string userName = Console.ReadLine();
     bool isValidDate = false;
     DateTime dateOfBirth = default(DateTime);
-
+    int userId = data.GetNextId();
     QualifyForDiscount();
 
     while (!isValidDate)
@@ -253,6 +275,7 @@ void CreateMember()
     }
     bool memberTypeValid = false;
     string memberType = "";
+    DateTime joinDate = DateTime.Now;
     while (!memberTypeValid)
     {
         Console.Write($"Enter membership type (single/multi):");
@@ -261,12 +284,12 @@ void CreateMember()
         {
             case "single":
                 memberTypeValid = true;
-                CreateSingleMember(userName, dateOfBirth);
+                CreateSingleMember(userId, userName, dateOfBirth);
                 showMenu();
                 break;
             case "multi":
                 memberTypeValid = true;
-                CreateMultiMember(userName, dateOfBirth);
+                CreateMultiMember(userId, userName, dateOfBirth, joinDate);
                 showMenu();
                 break;
             default:
@@ -292,18 +315,8 @@ bool QualifyForDiscount()
     else return false;
 }
 
-void CreateSingleMember(string userName, DateTime dateOfBirth)
+void CreateSingleMember(int userId, string userName, DateTime dateOfBirth)
 {
-    int maxId = 0;
-
-    foreach (var memberEntry in data.GetAllMembers())
-
-    {
-        if (memberEntry.Id > maxId)
-        {
-            maxId = memberEntry.Id;
-        }
-    }
     string clubInput = "";
     Console.WriteLine("Enter the ID number of desired club from the list below");
     int clubId = 0;
@@ -320,7 +333,7 @@ void CreateSingleMember(string userName, DateTime dateOfBirth)
 
     SingleMember member = new SingleMember(selectedClub)
     {
-        Id = maxId + 1,
+        Id = userId,
         FullName = userName,
         DateOfBirth = dateOfBirth,
         JoinDate = DateTime.Now,
@@ -330,25 +343,15 @@ void CreateSingleMember(string userName, DateTime dateOfBirth)
     ChangesSavedMessage();
 }
 
-void CreateMultiMember(string userName, DateTime dateOfBirth)
+void CreateMultiMember(int userId, string userName, DateTime dateOfBirth, DateTime joinDate)
 {
-    int maxId = data.GetNextId();
-    foreach (var memberEntry in data.GetAllMembers())
-
-    {
-        if (memberEntry.Id > maxId)
-        {
-            maxId = memberEntry.Id;
-        }
-    }
-
     MultiMember member = new MultiMember(20)
 
     {
-        Id = maxId,
+        Id = userId,
         FullName = userName,
         DateOfBirth = dateOfBirth,
-        JoinDate = DateTime.Now,
+        JoinDate = joinDate,
     };
     data.AddData(member);
     ChangesSavedMessage();
