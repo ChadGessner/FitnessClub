@@ -21,6 +21,7 @@ DataService data = new DataService();
     data.GetAllMembers()  <-- Returns list of all Members
     data.GetAllSingleMembers() <-- Returns list of all SingleMembers
     data.GetAllMultiMembers() <-- Returns list of all MultiMembers
+    data.GetSingleMembersByClub(Club club) <-- Returns a list of all SingleMembers who belong to the given club
     data.GetMemberById(int id) <--  Returns the Member from AllMembers with corresponding Id value, will throw exception if Member with that id does not exist, needs a validation
     data.GetMembersByName(string name) <-- Returns ***List of Members*** with matching name
     data.GetMemberByNameAndDateOfBirth(string name, DateTime dob) <-- Returns member from AllMembers and casts it appropriately, throws exception if member does not exist
@@ -43,6 +44,8 @@ DataService data = new DataService();
 //Console.WriteLine(data.GetCheckIns().Count);
 //Console.WriteLine(date.ToShortDateString());
 //Console.WriteLine(data.GetCheckInsByMember(data.GetMemberById(6))[0].DateTime.ToShortDateString());
+
+
 
 
 Console.WriteLine("Welcome to the Pizza Hut Gym Member Management System!");
@@ -79,6 +82,13 @@ void showMenu()
             break;
     }
 }
+void DisplayClubMembers(Club club)
+{
+    foreach(SingleMember singleMember in data.GetSingleMembersByClub(club))
+    {
+        Console.WriteLine($"Id: {singleMember.Id} Name: {singleMember.FullName} Join Date: {singleMember.JoinDate}");
+    }
+}
 
 void CheckInMember()
 {
@@ -106,12 +116,23 @@ void CheckInMember()
                 }
                 else
                 {
+
                     bool isMemberInt = Validation.IsInt(userInput);
                     if (isMemberInt)
                     {
                         Members member = data.GetMemberById(int.Parse(userInput));
-                        Club club = data.GetClubByIndex(int.Parse(clubInput));
-                        member.CheckIn(club);
+
+                        Club club = data.GetClubByIndex(int.Parse(clubInput) - 1);
+                        try
+                        {
+                            data.AddData(member.CheckIn(club));
+                        }
+                        catch
+                        {
+                            DisplayClubMembers(club);
+                            Console.WriteLine("Up sell method here");
+                        }
+
                     }
                     else
                     {
@@ -119,6 +140,7 @@ void CheckInMember()
                         CheckInMember();
                         break;
                     }
+
                 }
                 ChangesSavedMessage();
                 showMenu();
@@ -141,12 +163,15 @@ void listClubs()
         Console.WriteLine($"{clubIndex} - {club.Name}");
         clubIndex++;
     }
+
 }
+
 
 void ChangesSavedMessage()
 {
     Console.WriteLine("All changes saved.");
 }
+
 
 void ViewMemberList()
 {
@@ -288,8 +313,10 @@ void CreateSingleMember(string userName, DateTime dateOfBirth)
         clubId++;
     }
 
+
     clubInput = Console.ReadLine().ToLower();
     Club selectedClub = data.GetClubs()[int.Parse(clubInput) - 1];
+
 
     SingleMember member = new SingleMember(selectedClub)
     {
@@ -314,7 +341,9 @@ void CreateMultiMember(string userName, DateTime dateOfBirth)
             maxId = memberEntry.Id;
         }
     }
-    MultiMember member = new MultiMember()
+
+    MultiMember member = new MultiMember(20)
+
     {
         Id = maxId,
         FullName = userName,
@@ -325,12 +354,20 @@ void CreateMultiMember(string userName, DateTime dateOfBirth)
     ChangesSavedMessage();
 }
 
+/*
+ Allow users to:
+Add members (both kinds), remove members or display member information.
+Check a particular member in at a particular club. (Call the CheckIn method). Display a friendly error message if there is an exception. Don’t let it crash the program.
+Select a member and generate a bill of fees. Include membership points for Multi-Club Members.
+
+A main class which takes input from the user:
+Asks a user if they want to select a club
+Added members should be given the option to select from at least 4 fitness center locations or have the option to be a multi-club member.
+
+Optional enhancements:
+(Easy/Medium) Allow new members to receive discounts if they sign up during certain time periods, explore the DateTime library for help with date and time.
+(Medium) Store clubs and members in text files.
+(Hard) Out Pizza the hut 
 
 
-
-
-
-
-
-
-
+ */

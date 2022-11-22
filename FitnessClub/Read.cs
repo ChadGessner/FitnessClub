@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FitnessClub
 {
+
     // Fairly straight forward, Reads data from .txt,
     // and instantiates objects corresponding to the defined type (Types types),
     // in the Method overload, then passes the objects to the DataService() class,
@@ -14,6 +15,7 @@ namespace FitnessClub
     // using the get methods I will write,
     // for the DataService() class, 
     // maybe didn't need its own class, oh well... Idk DataService() already does a lot...
+    
     public class Read
     {
 
@@ -43,12 +45,12 @@ namespace FitnessClub
                                  
                             break;
                         case Types.multi:
-                            MultiMember multiMember = new MultiMember()
+                            MultiMember multiMember = new MultiMember(int.Parse(rawData[5]))
                             {
                                 Id = int.Parse(rawData[1]),
                                 FullName = rawData[2],
                                 DateOfBirth = DateTime.Parse(rawData[3]),
-                                JoinDate = DateTime.Parse(rawData[4])
+                                JoinDate = DateTime.Parse(rawData[4]),
                             };
                             readables.Add(multiMember);
                             break;
@@ -58,12 +60,13 @@ namespace FitnessClub
                             break;
                         case Types.checkin:
                             Club club = new Club(rawData[1], rawData[2], int.Parse(rawData[3]));
-                            Members member = rawData[4] == "single" ? new SingleMember(club) : new MultiMember();
-                            DateTime date = member.Type == Types.single ? DateTime.Parse(rawData[13]) : DateTime.Parse(rawData[9]);
+                            Members member = rawData[4] == "single" ? new SingleMember(club) : new MultiMember(int.Parse(rawData[9]));
+                            DateTime date = member.Type == Types.single ? DateTime.Parse(rawData[13]) : DateTime.Parse(rawData[10]);
                             member.Id = int.Parse(rawData[5]);
                             member.FullName = rawData[6];
                             member.DateOfBirth = DateTime.Parse(rawData[7]);
                             member.JoinDate = DateTime.Parse(rawData[8]);
+                            
                             CheckIn check = new CheckIn(club, member, date);
                             readables.Add(check);
                             break;
