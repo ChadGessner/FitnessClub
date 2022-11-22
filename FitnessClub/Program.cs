@@ -1,4 +1,4 @@
-﻿
+
 
 using FitnessClub;
 using System.Dynamic;
@@ -144,6 +144,7 @@ void CheckInMember()
                                 showMenu();
                                 break;
                         }
+
                     }
                 }
                 else
@@ -355,7 +356,7 @@ void CreateMultiMember(int userId, string userName, DateTime dateOfBirth, DateTi
 /*
  Allow users to:
 Add members (both kinds), remove members or display member information.
-Check a particular member in at a particular club. (Call the CheckIn method). Display a friendly error message if there is an exception. Don’t let it crash the program.
+Check a particular member in at a particular club. (Call the CheckIn method). Display a friendly error message if there is an exception. Don�t let it crash the program.
 Select a member and generate a bill of fees. Include membership points for Multi-Club Members.
 A main class which takes input from the user:
 Asks a user if they want to select a club
