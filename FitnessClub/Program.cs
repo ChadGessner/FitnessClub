@@ -136,6 +136,7 @@ void CheckInMember()
                                 Console.WriteLine("Up sell method here");
                             }
 
+                            AddPoints(member);
                         }
                         else
                         {
@@ -181,6 +182,18 @@ void ChangesSavedMessage()
 {
     Console.WriteLine("All changes saved.");
 }
+
+void AddPoints(Members _member)
+{
+    try
+    {
+       // _member.CurrentPoints=
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Error in AddPoints()" + ex.ToString());
+    }
+} 
 
 
 void ViewMemberList()

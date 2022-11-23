@@ -61,7 +61,7 @@ namespace FitnessClub
                         case Types.checkin:
                             Club club = new Club(rawData[1], rawData[2], int.Parse(rawData[3]));
                             Members member = rawData[4] == "single" ? new SingleMember(club) : new MultiMember(int.Parse(rawData[9]));
-                            DateTime date = member.Type == Types.single ? DateTime.Parse(rawData[13]) : DateTime.Parse(rawData[10]);
+                            DateTime date = member.Type == Types.single ? DateTime.Parse(rawData[13]) : DateTime.Parse(rawData[10]); //read in errored out because the points were not at the end of the line
                             member.Id = int.Parse(rawData[5]);
                             member.FullName = rawData[6];
                             member.DateOfBirth = DateTime.Parse(rawData[7]);

@@ -20,14 +20,14 @@ namespace FitnessClub
         {
             if(club.Name == Club.Name)
             {
-                return new CheckIn(Club, this, DateTime.Now);
+                return new CheckIn(Club, this, DateTime.Now, true); //this is where the currentDateTime gets set for checkIn()
             }
             throw new Exception("You don't belong to this club bruh...");
         }
        
 
         public override string DataToString()
-        {
+        {// taking off the last |
             return $"{Type}|{Id}|{FullName}|{DateOfBirth}|{JoinDate}|{Club.DataToString()}";
         }
         public override Type GetBase()

@@ -18,9 +18,58 @@ namespace FitnessClub
             Member = member;
             DateTime = dateTime;
         }
-        public string DataToString()
+        public CheckIn(Club club, Members member, DateTime dateTime, bool menuLoaded)
         {
-            return $"{Club.DataToString()}|{Member.DataToString()}|{DateTime}";
+            Club = club;
+            Member = member;
+            DateTime = dateTime;
+            AddToCurrentPoints();
+            //var foo = 
+        }
+        public string DataToString()
+        {// verified that this current points stores to the right location
+            return $"{Club.DataToString()}|{Member.DataToString()}|{DateTime}|{Member.CurrentPoints}";
+        }
+        public int AddToCurrentPoints()
+        {
+            bool isBday = IsItMemberBday();
+            if (isBday)
+            {
+                Member.CurrentPoints = Member.CurrentPoints + 15;
+            }
+            else
+            {
+                Member.CurrentPoints = Member.CurrentPoints + 10;
+            }
+            return Member.CurrentPoints;
+        }
+
+        public bool IsItMemberBday()
+        {
+            DateTime today = DateTime.Parse(DateTime.Now.ToShortDateString());
+            DateTime shortBdayOfMember = DateTime.Parse(Member.DateOfBirth.ToShortDateString());
+            if (today == shortBdayOfMember)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
+
+
+
+    //public override CheckIn CheckIn(Club club)
+    //{
+    //    Points += 10;
+    //    DateTime today = DateTime.Parse(DateTime.Now.ToShortDateString());
+    //    DateTime shortBday = DateTime.Parse(DateOfBirth.ToShortDateString());
+    //    if (today == shortBday)
+    //    {
+    //        Points += 15;
+    //    }
+    //    return new CheckIn(club, this, DateTime.Now);
+    //}
 }
