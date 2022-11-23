@@ -2,6 +2,7 @@
 
 
 using FitnessClub;
+using System;
 using System.Dynamic;
 using System.Net.Http.Headers;
 // ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
@@ -92,67 +93,76 @@ void DisplayClubMembers(Club club)
 
 void CheckInMember()
 {
-    Console.Write("Enter the ID for the member to check-in, type 'view' to display a list of all members or enter 'menu' to return to the main menu:");
-    string userInput = Console.ReadLine().ToLower();
-    switch (userInput)
+    try
     {
-        case "menu":
-            showMenu();
-            break;
-        case "view":
-            ViewMemberList();
-            CheckInMember();
-            break;
-        default:
-            bool isClubInt = Validation.IsInt(userInput);
-            if (isClubInt)
-            {
-                Console.Write("Enter the club ID number to check in to or type 'view' to display a list of clubs:");
-                string clubInput = Console.ReadLine();
-                if (clubInput.ToLower() == "view")
+        Console.Write("Enter the ID for the member to check-in, type 'view' to display a list of all members or enter 'menu' to return to the main menu:");
+        string userInput = Console.ReadLine().ToLower();
+        switch (userInput)
+        {
+            case "menu":
+                showMenu();
+                break;
+            case "view":
+                ViewMemberList();
+                CheckInMember();
+                break;
+            default:
+                bool isClubInt = Validation.IsInt(userInput);
+                if (isClubInt)
                 {
-                    listClubs();
-                    CheckInMember();
-                }
-                else
-                {
-
-                    bool isMemberInt = Validation.IsInt(userInput);
-                    if (isMemberInt)
+                    Console.Write("Enter the club ID number to check in to or type 'view' to display a list of clubs:");
+                    string clubInput = Console.ReadLine();
+                    if (clubInput.ToLower() == "view")
                     {
-                        Members member = data.GetMemberById(int.Parse(userInput));
-
-                        Club club = data.GetClubByIndex(int.Parse(clubInput) - 1);
-                        try
-                        {
-                            data.AddData(member.CheckIn(club));
-                        }
-                        catch
-                        {
-                            DisplayClubMembers(club);
-                            Console.WriteLine("Up sell method here");
-                        }
-
+                        listClubs();
+                        CheckInMember();
                     }
                     else
                     {
-                        Console.WriteLine("That is not a valid club ID. Please try again");
-                        CheckInMember();
-                        break;
-                    }
 
+                        bool isMemberInt = Validation.IsInt(userInput);
+                        if (isMemberInt)
+                        {
+                            Members member = data.GetMemberById(int.Parse(userInput));
+
+                            Club club = data.GetClubByIndex(int.Parse(clubInput) - 1);
+                            try
+                            {
+                                data.AddData(member.CheckIn(club));
+                            }
+                            catch
+                            {
+                                DisplayClubMembers(club);
+                                Console.WriteLine("Up sell method here");
+                            }
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("That is not a valid club ID. Please try again");
+                            CheckInMember();
+                            break;
+                        }
+
+                    }
+                    ChangesSavedMessage();
+                    showMenu();
+                    break;
                 }
-                ChangesSavedMessage();
-                showMenu();
-                break;
-            }
-            else
-            {
-                Console.WriteLine("That is not a valid userID. Please try again");
-                DeleteMember();
-                break;
-            }
+                else
+                {
+                    Console.WriteLine("That is not a valid userID. Please try again");
+                    DeleteMember();
+                    break;
+                }
+        }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine("error CheckInMember: " + ex.ToString());
+       
+    }
+    
 }
 
 void listClubs()
