@@ -4,6 +4,7 @@
 using FitnessClub;
 using System;
 using System.Dynamic;
+using System.Linq;
 using System.Net.Http.Headers;
 // ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
 DataService data = new DataService();
@@ -52,6 +53,20 @@ DataService data = new DataService();
 Console.WriteLine("Welcome to the Pizza Hut Gym Member Management System!");
 showMenu();
 
+void ViewInvoice()
+{
+    Console.WriteLine("Please select member ID: ");
+    string userChoice = Console.ReadLine().ToLower();
+
+    var memberResult = data.GetAllMembers();
+    var userFromAllMembers = memberResult.Where(x => x.Id == int.Parse(userChoice)).FirstOrDefault();
+    Console.WriteLine(userFromAllMembers);
+    var clubResult = data.GetClubs();
+   
+
+    Console.WriteLine($"Member ID:{userFromAllMembers.Id} , Member Name: {userFromAllMembers.FullName}, Current Points: {userFromAllMembers.CurrentPoints},");
+
+}
 
 void showMenu()
 {
@@ -60,7 +75,8 @@ void showMenu()
     Console.WriteLine("2 - Create a new member");
     Console.WriteLine("3 - View details of all members");
     Console.WriteLine("4 - Delete an existing member");
-    Console.WriteLine("5 - Exit application");
+    Console.WriteLine("5 - View member invoice");
+    Console.WriteLine("6 - Exit application");
 
     string userChoice = Console.ReadLine().ToLower();
     switch (userChoice)
@@ -77,8 +93,11 @@ void showMenu()
             break;
         case "4":
             DeleteMember();
-            break;
+            break; 
         case "5":
+            ViewInvoice();
+            break;
+        case "6":
             Environment.Exit(0);
             break;
     }
