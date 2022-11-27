@@ -121,8 +121,21 @@ void CheckInMember()
                     if (isMemberInt)
                     {
                         Members member = data.GetMemberById(int.Parse(userInput));
+                        if (member == null)
+                        {
+                            Console.WriteLine($"{userInput} is not a valid member Id.");
+                            CheckInMember();
+                        }
+                        Console.WriteLine($"{member.FullName} selected.");
 
-                        Club club = data.GetClubByIndex(int.Parse(clubInput) - 1);
+                        int clubIndex = int.Parse(clubInput) - 1;
+                        Club club = data.GetClubByIndex(clubIndex);
+                        if (club == null)
+                        {
+                            Console.WriteLine($"{clubIndex} is not a valid club index.");
+                            CheckInMember();
+
+                        }
                         try
                         {
                             data.AddData(member.CheckIn(club));
@@ -206,6 +219,12 @@ void DeleteMember()
                 if (userConfirm == "y")
                 {
                     Members userToDelete = data.GetMemberById(int.Parse(userInput));
+
+                    if (userToDelete == null)
+                    {
+                        Console.WriteLine($"{userInput} is not a valid user Id.");
+                        DeleteMember();
+                    }
 
                     data.DeleteData(userToDelete);
                     ChangesSavedMessage();

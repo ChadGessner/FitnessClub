@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FitnessClub", "FitnessClub\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1BF30C6A-9294-443B-BC67-ABBB9124FBE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessClub.UnitTests", "FitnessClub.UnitTests\FitnessClub.UnitTests.csproj", "{943B2E27-B179-49B7-A4AB-74E6ACAEC330}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{ADBE303F-77DA-4274-A10A-3E86C3749360}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADBE303F-77DA-4274-A10A-3E86C3749360}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADBE303F-77DA-4274-A10A-3E86C3749360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{943B2E27-B179-49B7-A4AB-74E6ACAEC330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{943B2E27-B179-49B7-A4AB-74E6ACAEC330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{943B2E27-B179-49B7-A4AB-74E6ACAEC330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{943B2E27-B179-49B7-A4AB-74E6ACAEC330}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

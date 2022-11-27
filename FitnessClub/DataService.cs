@@ -57,6 +57,10 @@ namespace FitnessClub
         }
         public Club GetClubByIndex(int index)
         {
+            if (index > Clubs.Count - 1)
+            {
+                return null;
+            }
             return Clubs[index];
         }
         public Club GetClubByName(string name)
@@ -70,7 +74,7 @@ namespace FitnessClub
         public List<SingleMember> GetAllSingleMembers() => SingleMembers;
         public List<MultiMember> GetAllMultiMembers() => MultiMembers;
         public Members GetMemberById(int id) => AllMembers
-            .Single(m => m.Id == id);
+            .FirstOrDefault(m => m.Id == id);
         public List<Members> GetMembersByName(string name) => AllMembers
             .Where(m => m.FullName
             .ToLower() == name
