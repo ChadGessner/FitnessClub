@@ -60,14 +60,26 @@ void ViewInvoice()
 
     var memberResult = data.GetAllMembers();
     var userFromAllMembers = memberResult.Where(x => x.Id == int.Parse(userChoice)).FirstOrDefault();
-    Console.WriteLine(userFromAllMembers);
+   // Console.WriteLine(userFromAllMembers);
     var clubResult = data.GetClubs();
     // Need to get Base fee in here
 
     Console.WriteLine($"Show me the base fee from reading in the member txt file: {userFromAllMembers.BaseFee}");
 
+    Console.WriteLine($"{"ID",-5} {"Name",-15} {"Current Points",-15} {"Fee",-11}");
+    Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"-----------",-11}");
+    Console.WriteLine($"{userFromAllMembers.Id, -5} {userFromAllMembers.FullName,-15} {userFromAllMembers.CurrentPoints, -15} {userFromAllMembers.BaseFee,-11}");
+    //void ViewMemberList()
+    //{
+    //    Console.WriteLine($"{"ID",-5} {"Name",-15} {"Date of Birth",-15} {"Join Date",-15} {"Member Type",-11}");
+    //    Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"--------------",-15} {"-----------",-11}");
+    //    foreach (var member in data.GetAllMembers())
 
-    Console.WriteLine($"Member ID:{userFromAllMembers.Id} , Member Name: {userFromAllMembers.FullName}, Current Points: {userFromAllMembers.CurrentPoints},");
+    //    {
+    //        Console.WriteLine($"{member.Id,-5} {member.FullName,-15} {member.DateOfBirth.ToString("MM/dd/yyyy"),-15} {member.JoinDate.ToString("MM/dd/yyyy"),-15} {member.Type,-10}");
+    //    }
+    //}
+    //Console.WriteLine($"Member ID:{userFromAllMembers.Id} , Member Name: {userFromAllMembers.FullName}, /nCurrent Points: {userFromAllMembers.CurrentPoints},");
 
 }
 
