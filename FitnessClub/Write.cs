@@ -18,9 +18,12 @@ namespace FitnessClub
         {
             using (StreamWriter sw = new StreamWriter(connectionString, true))
             {
-                sw.WriteLine(data.DataToString());
-                sw.Flush();
-                sw.Close();
+                sw
+                    .WriteLine(data.DataToString());
+                sw
+                    .Flush();
+                sw
+                    .Close();
             }
         }
         // Takes data from DeleteData() method in DataService class,
@@ -32,9 +35,15 @@ namespace FitnessClub
         // removed from memory.
         public void Eraser(IWriteable data, string connectionString, string tempConnectionString)
         {
+            string[] dataStringArray = data
+                .DataToString()
+                .Split('|');
+            string dataString = data.Type == Types.multi ? String.Join('|',dataStringArray.Take(dataStringArray.Length - 2)) : data.DataToString();
             FileStream temp = File.Create(tempConnectionString);
             temp.Close();
-            var linesToKeep = File.ReadLines(connectionString).Where(l => l != data.DataToString());
+            var linesToKeep = data.Type == Types.multi ? File.ReadLines(connectionString)
+                .Where(l => String.Join('|',l.Split('|').Take(dataStringArray.Length-2)) != dataString) : File.ReadLines(connectionString)
+                .Where(l => l != data.DataToString());
             File.WriteAllLines(tempConnectionString, linesToKeep);
             File.Delete(connectionString);
             File.Move(tempConnectionString, connectionString);

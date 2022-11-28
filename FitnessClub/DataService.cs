@@ -46,6 +46,14 @@ namespace FitnessClub
             LoadData();
         }
         // Methods added for querying in memory data
+        private void NukeData()
+        {
+            SingleMembers.Clear();
+            MultiMembers.Clear();
+            AllMembers.Clear();
+            Clubs.Clear();
+            CheckIns.Clear();
+        }
         public List<Club> GetClubs() => Clubs;
         public List<CheckIn> GetCheckIns() => CheckIns;
         public List<CheckIn> GetCheckInsByMember(Members member)
@@ -209,6 +217,19 @@ namespace FitnessClub
         private void WriteData(IWriteable data, string connectionString)
         {
             Writer.Writer(data, connectionString);
+        }
+        public void UpdateData(IWriteable data)
+        {
+            while (true)
+            {
+                DeleteData(data);
+                NukeData();
+                
+                break;
+            }
+            LoadData();
+            AddData(data);
+
         }
         public void DeleteData(IWriteable data)
         {
