@@ -31,6 +31,7 @@ namespace FitnessClub
                     string[] rawData = line.Split('|');
                     switch (types)
                     {
+                        // Single member gets created here
                         case Types.single:
                             Club singleClub = new Club(rawData[6], rawData[7], int.Parse(rawData[8]));
                             SingleMember singleMember = new SingleMember(singleClub)
@@ -38,9 +39,10 @@ namespace FitnessClub
                                 Id = int.Parse(rawData[1]),
                                 FullName = rawData[2],
                                 DateOfBirth = DateTime.Parse(rawData[3]),
-                                JoinDate = DateTime.Parse(rawData[4])
+                                JoinDate = DateTime.Parse(rawData[4]),
+                                BaseFee = int.Parse(rawData[8])                                
                             };
-                            readables.Add(singleMember);
+                            readables.Add(singleMember); // Single member base fee is now shown
                                 
                                  
                             break;

@@ -62,7 +62,10 @@ void ViewInvoice()
     var userFromAllMembers = memberResult.Where(x => x.Id == int.Parse(userChoice)).FirstOrDefault();
     Console.WriteLine(userFromAllMembers);
     var clubResult = data.GetClubs();
-   
+    // Need to get Base fee in here
+
+    Console.WriteLine($"Show me the base fee from reading in the member txt file: {userFromAllMembers.BaseFee}");
+
 
     Console.WriteLine($"Member ID:{userFromAllMembers.Id} , Member Name: {userFromAllMembers.FullName}, Current Points: {userFromAllMembers.CurrentPoints},");
 
