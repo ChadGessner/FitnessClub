@@ -11,6 +11,7 @@ namespace FitnessClub
         public override Types Type { get; set; } = (Types)1;
         public int Points { get; set; }
         public int BirthdayBonus { get;private set; }
+        public int BaseMultiMemberFee { get; private set; } = 500;
         public MultiMember(int points)
         {
             Points = points;

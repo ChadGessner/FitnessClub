@@ -50,7 +50,51 @@ DataService data = new DataService();
 
 Console.WriteLine("Welcome to the Pizza Hut Gym Member Management System!");
 showMenu();
+void ViewInvoice()
+{
+	Members user;
+	SingleMember sm;
+	MultiMember mm;
+	Console.WriteLine("Please select member ID: ");
+	string userChoice = Console.ReadLine().ToLower();
+	
+	var memberResult = data.GetAllMembers();
+	try
+	{
+		data.GetMemberById(int.Parse(userChoice));
+	}
+	catch
+	{
+		Console.Clear();
+		Console.WriteLine("That is not a valid member Id, here is a list of all members with Id's...\n");
+		ViewMemberList();
+		ViewInvoice();
+	}
+	user = data.GetMemberById(int.Parse(userChoice));
+	bool isSingle = user.Type == Types.single;
+	sm = isSingle ? data.GetSingleMemberOrDefault(user) : null;
+	mm = !isSingle ? data.GetMultiMemberOrDefault(user) : null;
+	int baseFee = isSingle ? sm.Club.BaseFee : mm.BaseMultiMemberFee;
+	string points = isSingle ? "N/A" : mm.Points.ToString();
 
+
+
+	var clubResult = data.GetClubs();
+	if (!isSingle)
+	{
+		Console.WriteLine($"{"ID",-5} {"Name",-15} {"Current Points",-15} {"Fee",-11}");
+		Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"-----------",-11}");
+		Console.WriteLine($"{mm.Id,-5} {mm.FullName,-15} {mm.Points,-15} {baseFee,-11}");
+	}
+	else
+	{
+		Console.WriteLine($"{"ID",-5} {"Name",-15} {"Current Points",-15} {"Fee",-11}");
+		Console.WriteLine($"{"-----",-5} {"---------------",-15} {"--------------",-15} {"-----------",-11}");
+		Console.WriteLine($"{sm.Id,-5} {sm.FullName,-15} {points,-15} {baseFee,-11}");
+	}
+	showMenu();
+
+}
 
 void showMenu()
 {
@@ -59,7 +103,8 @@ void showMenu()
 	Console.WriteLine("2 - Create a new member");
 	Console.WriteLine("3 - View details of all members");
 	Console.WriteLine("4 - Delete an existing member");
-	Console.WriteLine("5 - Exit application");
+	Console.WriteLine("5 - View Invoice");
+	Console.WriteLine("6 - Exit Application");
 
 	string userChoice = Console.ReadLine().ToLower();
 	switch (userChoice)
@@ -78,7 +123,11 @@ void showMenu()
 			DeleteMember();
 			break;
 		case "5":
-			Environment.Exit(0);
+
+			ViewInvoice();
+			break;
+		case "6":
+			Environment.Exit(1);
 			break;
 	}
 }
