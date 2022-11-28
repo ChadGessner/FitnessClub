@@ -10,7 +10,7 @@ namespace FitnessClub
     {
         public Club Club { get; set; }
         public Members Member { get; set; }
-        public DateTime DateTime { get; set;  } 
+        public DateTime DateTime { get; set; }
         public Types Type { get; set; } = Types.checkin;
         public CheckIn(Club club, Members member, DateTime dateTime)
         {
@@ -58,18 +58,5 @@ namespace FitnessClub
             }
         }
     }
-
-
-
-    //public override CheckIn CheckIn(Club club)
-    //{
-    //    Points += 10;
-    //    DateTime today = DateTime.Parse(DateTime.Now.ToShortDateString());
-    //    DateTime shortBday = DateTime.Parse(DateOfBirth.ToShortDateString());
-    //    if (today == shortBday)
-    //    {
-    //        Points += 15;
-    //    }
-    //    return new CheckIn(club, this, DateTime.Now);
-    //}
 }
+
