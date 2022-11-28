@@ -61,27 +61,32 @@ void showMenu()
     Console.WriteLine("4 - Delete an existing member");
     Console.WriteLine("5 - Exit application");
 
-    string userChoice = Console.ReadLine().ToLower();
-    switch (userChoice)
+    
+    static int MyChoice(string choice)
     {
-        case "1":
-            CheckInMember();
-            break;
-        case "2":
-            CreateMember();
-            break;
-        case "3":
-            ViewMemberList();
-            showMenu();
-            break;
-        case "4":
-            DeleteMember();
-            break;
-        case "5":
-            Environment.Exit(0);
-            break;
+        switch (choice)
+        {
+            case "check":
+            case "1":
+                return 1;
+            case "create":
+            case "2":
+                return 2;
+            case "view":
+            case "3":
+                return 3;
+            case "delete":
+            case "4":
+                return 4;
+            case "exit":
+            case "5":
+                return 5;
+            default:
+                return -1;
+        }
     }
 }
+
 void DisplayClubMembers(Club club)
 {
     foreach(SingleMember singleMember in data.GetSingleMembersByClub(club))
