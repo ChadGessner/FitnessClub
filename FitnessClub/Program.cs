@@ -1,7 +1,9 @@
 
 
 using FitnessClub;
+using System;
 using System.Dynamic;
+using System.Linq;
 using System.Net.Http.Headers;
 // ---> **** Change Connection strings in DataService to correspond to your local repository **** <---
 DataService data = new DataService();
@@ -93,43 +95,43 @@ void ViewInvoice()
 		Console.WriteLine($"{sm.Id,-5} {sm.FullName,-15} {points,-15} {baseFee,-11}");
 	}
 	showMenu();
-
 }
 
 void showMenu()
 {
-	Console.WriteLine("Choose from the following options:");
-	Console.WriteLine("1 - Check an existing member into a club");
-	Console.WriteLine("2 - Create a new member");
-	Console.WriteLine("3 - View details of all members");
-	Console.WriteLine("4 - Delete an existing member");
-	Console.WriteLine("5 - View Invoice");
-	Console.WriteLine("6 - Exit Application");
 
-	string userChoice = Console.ReadLine().ToLower();
-	switch (userChoice)
-	{
-		case "1":
-			CheckInMember();
-			break;
-		case "2":
-			CreateMember();
-			break;
-		case "3":
-			ViewMemberList();
-			showMenu();
-			break;
-		case "4":
-			DeleteMember();
-			break;
-		case "5":
+    Console.WriteLine("Choose from the following options:");
+    Console.WriteLine("1 - Check an existing member into a club");
+    Console.WriteLine("2 - Create a new member");
+    Console.WriteLine("3 - View details of all members");
+    Console.WriteLine("4 - Delete an existing member");
+    Console.WriteLine("5 - View member invoice");
+    Console.WriteLine("6 - Exit application");
 
-			ViewInvoice();
-			break;
-		case "6":
-			Environment.Exit(1);
-			break;
-	}
+    string userChoice = Console.ReadLine().ToLower();
+    switch (userChoice)
+    {
+        case "1":
+            CheckInMember();
+            break;
+        case "2":
+            CreateMember();
+            break;
+        case "3":
+            ViewMemberList();
+            showMenu();
+            break;
+        case "4":
+            DeleteMember();
+            break; 
+        case "5":
+            ViewInvoice();
+            break;
+        case "6":
+            Environment.Exit(0);
+            break;
+    }
+
 }
 void DisplayClubMembers(Club club)
 {
@@ -141,6 +143,7 @@ void DisplayClubMembers(Club club)
 
 void CheckInMember()
 {
+
 	
 	Console.Write("Enter the ID for the member to check-in, type 'view' to display a list of all members or enter 'menu' to return to the main menu:");
 	string userInput = Console.ReadLine().ToLower();
@@ -237,6 +240,7 @@ void CheckInMember()
 				break;
 			}
 	}
+
 }
 
 void listClubs()
@@ -255,6 +259,21 @@ void ChangesSavedMessage()
 {
 	Console.WriteLine("All changes saved.");
 }
+
+void AddPoints(Members _member)
+{
+    try
+    {
+       // _member.CurrentPoints=
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Error in AddPoints()" + ex.ToString());
+    }
+} 
+
+
+
 void ViewMemberList()
 {
 	string clubName = "";
@@ -280,6 +299,7 @@ void ViewMemberList()
 }
 void DeleteMember()
 {
+
 	Console.Write("Enter the ID for the member to delete, type 'view' to display a list of all members or enter 'menu' to return to the main menu:");
 	string userInput = Console.ReadLine().ToLower();
 	switch (userInput)
@@ -328,6 +348,7 @@ void DeleteMember()
 				break;
 			}
 	}
+
 }
 
 void CreateMember()
@@ -437,11 +458,14 @@ void CreateMultiMember(int userId, string userName, DateTime dateOfBirth, DateTi
 /*
  Allow users to:
 Add members (both kinds), remove members or display member information.
-Check a particular member in at a particular club. (Call the CheckIn method). Display a friendly error message if there is an exception. Don’t let it crash the program.
+Check a particular member in at a particular club. (Call the CheckIn method). Display a friendly error message if there is an exception. Donâ€™t let it crash the program.
 Select a member and generate a bill of fees. Include membership points for Multi-Club Members.
+
 A main class which takes input from the user:
 Asks a user if they want to select a club
 Added members should be given the option to select from at least 4 fitness center locations or have the option to be a multi-club member.
+
+
 Optional enhancements:
 (Easy/Medium) Allow new members to receive discounts if they sign up during certain time periods, explore the DateTime library for help with date and time.
 (Medium) Store clubs and members in text files.
