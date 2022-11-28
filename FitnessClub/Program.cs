@@ -143,8 +143,10 @@ void CheckInMember()
                     else
                     {
 
+
                         bool isMemberInt = Validation.IsInt(userInput);
                         if (isMemberInt)
+
                         {
                             Members member = data.GetMemberById(int.Parse(userInput));
 
@@ -252,6 +254,12 @@ void DeleteMember()
                 if (userConfirm == "y")
                 {
                     Members userToDelete = data.GetMemberById(int.Parse(userInput));
+
+                    if (userToDelete == null)
+                    {
+                        Console.WriteLine($"{userInput} is not a valid user Id.");
+                        DeleteMember();
+                    }
 
                     data.DeleteData(userToDelete);
                     ChangesSavedMessage();

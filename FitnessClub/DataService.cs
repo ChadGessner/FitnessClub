@@ -14,6 +14,7 @@ namespace FitnessClub
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---
 
+
         //private string singleMemberConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataSingleMember.txt";
         //private string multiMemberConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataMultiMembers.txt";
         //private string clubsConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataClubs.txt";
@@ -29,6 +30,7 @@ namespace FitnessClub
         private string tempConnectionString = @"C:\Users\lisa.vongsiprasom\Source\Repos\FitnessClub\FitnessClub\Data\temp.txt";
         private string checkinConnectionString = @"C:\Users\lisa.vongsiprasom\Source\Repos\FitnessClub\FitnessClub\Data\checkIn.txt";
         
+
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---
         private List<SingleMember> SingleMembers { get; set; } = new List<SingleMember>();
@@ -65,6 +67,10 @@ namespace FitnessClub
         }
         public Club GetClubByIndex(int index)
         {
+            if (index > Clubs.Count - 1)
+            {
+                return null;
+            }
             return Clubs[index];
         }
         public Club GetClubByName(string name)
@@ -78,7 +84,7 @@ namespace FitnessClub
         public List<SingleMember> GetAllSingleMembers() => SingleMembers;
         public List<MultiMember> GetAllMultiMembers() => MultiMembers;
         public Members GetMemberById(int id) => AllMembers
-            .Single(m => m.Id == id);
+            .FirstOrDefault(m => m.Id == id);
         public List<Members> GetMembersByName(string name) => AllMembers
             .Where(m => m.FullName
             .ToLower() == name
