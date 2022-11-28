@@ -14,12 +14,22 @@ namespace FitnessClub
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---
 
-        private string singleMemberConnectionString = @"C:\Users\Grant\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
-        private string multiMemberConnectionString = @"C:\Users\Grant\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
-        private string clubsConnectionString = @"C:\Users\Grant\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
-        private string tempConnectionString = @"C:\Users\Grant\Source\Repos\FitnessClub\FitnessClub\Data\temp.txt";
-        private string checkinConnectionString = @"C:\Users\Grant\Source\Repos\FitnessClub\FitnessClub\Data\checkIn.txt";
 
+        //private string singleMemberConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataSingleMember.txt";
+        //private string multiMemberConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataMultiMembers.txt";
+        //private string clubsConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/dataClubs.txt";
+        //private string tempConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/temp.txt";
+        //private string checkinConnectionString = @"/Users/christinaballard/Documents/GitHub/FitnessClub/FitnessClub/Data/checkIn.txt";
+
+
+        
+
+        private string singleMemberConnectionString = @"C:\Users\lisa.vongsiprasom\Source\Repos\FitnessClub\FitnessClub\Data\dataSingleMember.txt";
+        private string multiMemberConnectionString = @"C:\Users\lisa.vongsiprasom\Source\Repos\FitnessClub\FitnessClub\Data\dataMultiMembers.txt";
+        private string clubsConnectionString = @"C:\Users\lisa.vongsiprasom\Source\Repos\FitnessClub\FitnessClub\Data\dataClubs.txt";
+        private string tempConnectionString = @"C:\Users\lisa.vongsiprasom\Source\Repos\FitnessClub\FitnessClub\Data\temp.txt";
+        private string checkinConnectionString = @"C:\Users\lisa.vongsiprasom\Source\Repos\FitnessClub\FitnessClub\Data\checkIn.txt";
+        
 
 
         // ---> **** Change Connection strings to correspond to your local repository **** <---

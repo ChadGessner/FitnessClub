@@ -13,6 +13,8 @@ namespace FitnessClub
         public virtual DateTime DateOfBirth { get; set; } //date time
         public virtual DateTime JoinDate { get; set; }
         public virtual Types Type { get; set; }
+        public virtual int CurrentPoints { get; set; }
+        public virtual int BaseFee { get; set; }
         public Members()
         {
             
